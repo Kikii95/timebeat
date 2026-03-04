@@ -1,0 +1,350 @@
+// ============================================
+// TIMEBEAT - Database Schema
+// ============================================
+// Stack: Supabase PostgreSQL
+// ORM: Prisma 6.x
+// ============================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum ProjectType {
+  PERSONAL
+  WORK
+  FREELANCE
+  LEARNING
+  OPEN_SOURCE
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  ARCHIVED
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum SessionType {
+  FREE
+  TIMED
+  POMODORO
+}
+
+enum GoalPeriod {
+  DAILY
+  WEEKLY
+  MONTHLY
+  CUSTOM
+}
+
+enum SyncOperation {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+// ============================================
+// USERS
+// ============================================
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  avatarUrl String?  @map("avatar_url")
+  timezone  String   @default("Europe/Paris")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  settings  UserSettings?
+  projects  Project[]
+  sessions  Session[]
+  goals     Goal[]
+  syncQueue SyncOutbox[]
+
+  @@map("users")
+}
+
+model UserSettings {
+  id     String @id @default(uuid())
+  userId String @unique @map("user_id")
+
+  // Pomodoro Settings
+  pomodoroWorkMinutes            Int @default(25) @map("pomodoro_work_minutes")
+  pomodoroBreakMinutes           Int @default(5) @map("pomodoro_break_minutes")
+  pomodoroLongBreakMinutes       Int @default(15) @map("pomodoro_long_break_minutes")
+  pomodoroSessionsUntilLongBreak Int @default(4) @map("pomodoro_sessions_until_long_break")
+
+  // Notification Settings
+  enableNotifications    Boolean @default(true) @map("enable_notifications")
+  enableSounds           Boolean @default(true) @map("enable_sounds")
+  breakReminderMinutes   Int     @default(25) @map("break_reminder_minutes")
+  hydrationReminderHours Int     @default(2) @map("hydration_reminder_hours")
+
+  // UI Settings
+  theme               String  @default("system") // light, dark, system
+  compactMode         Boolean @default(false) @map("compact_mode")
+  showProjectsInTray  Boolean @default(true) @map("show_projects_in_tray")
+  startTimerOnStartup Boolean @default(false) @map("start_timer_on_startup")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
+
+// ============================================
+// PROJECTS
+// ============================================
+
+model Project {
+  id          String        @id @default(uuid())
+  userId      String        @map("user_id")
+  name        String
+  description String?
+  type        ProjectType   @default(PERSONAL)
+  status      ProjectStatus @default(ACTIVE)
+
+  // Visual
+  color String  @default("#4ECDC4")
+  icon  String?
+
+  // Metadata
+  stack    String[] @default([])
+  platform String[] @default([])
+  readme   String?
+
+  // Stats (cached for performance)
+  totalTimeSeconds Int @default(0) @map("total_time_seconds")
+  sessionCount     Int @default(0) @map("session_count")
+  taskCount        Int @default(0) @map("task_count")
+  completedTasks   Int @default(0) @map("completed_tasks")
+
+  // Timestamps
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  lastSessionAt DateTime? @map("last_session_at")
+  archivedAt    DateTime? @map("archived_at")
+
+  // Relations
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks    Task[]
+  sessions Session[]
+  goals    Goal[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([type])
+  @@map("projects")
+}
+
+// ============================================
+// TASKS
+// ============================================
+
+model Task {
+  id          String     @id @default(uuid())
+  projectId   String     @map("project_id")
+  title       String
+  description String?
+  status      TaskStatus @default(TODO)
+
+  // Time Tracking
+  estimatedMinutes Int @default(0) @map("estimated_minutes")
+  actualMinutes    Int @default(0) @map("actual_minutes")
+
+  // Organization
+  priority Int @default(0) // Higher = more important
+  order    Int @default(0) // For manual sorting
+
+  // Tags
+  tags String[] @default([])
+
+  // Timestamps
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  completedAt DateTime? @map("completed_at")
+  dueAt       DateTime? @map("due_at")
+
+  // Relations
+  project  Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sessions Session[]
+
+  @@index([projectId])
+  @@index([status])
+  @@map("tasks")
+}
+
+// ============================================
+// SESSIONS (Time Entries)
+// ============================================
+
+model Session {
+  id        String      @id @default(uuid())
+  userId    String      @map("user_id")
+  projectId String      @map("project_id")
+  taskId    String?     @map("task_id")
+  type      SessionType @default(FREE)
+
+  // Timing
+  plannedMinutes Int?     @map("planned_minutes")
+  startedAt      DateTime @map("started_at")
+  endedAt        DateTime? @map("ended_at")
+  totalSeconds   Int      @default(0) @map("total_seconds")
+  pausedSeconds  Int      @default(0) @map("paused_seconds")
+
+  // Metadata
+  notes String?
+
+  // Pomodoro specific
+  pomodoroCount Int @default(0) @map("pomodoro_count")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  task    Task?   @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  breaks  Break[]
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([startedAt])
+  @@map("sessions")
+}
+
+model Break {
+  id        String @id @default(uuid())
+  sessionId String @map("session_id")
+
+  // Timing
+  startedAt       DateTime  @map("started_at")
+  endedAt         DateTime? @map("ended_at")
+  durationSeconds Int       @default(0) @map("duration_seconds")
+
+  // Type
+  isLongBreak Boolean @default(false) @map("is_long_break")
+
+  // Relations
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@map("breaks")
+}
+
+// ============================================
+// GOALS
+// ============================================
+
+model Goal {
+  id        String     @id @default(uuid())
+  userId    String     @map("user_id")
+  projectId String?    @map("project_id") // null = all projects
+  period    GoalPeriod @default(WEEKLY)
+
+  // Target
+  targetMinutes Int @map("target_minutes")
+
+  // Period bounds
+  startDate DateTime  @map("start_date")
+  endDate   DateTime? @map("end_date") // null for ongoing
+
+  // Progress (cached)
+  currentMinutes Int @default(0) @map("current_minutes")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([startDate])
+  @@map("goals")
+}
+
+// ============================================
+// OFFLINE SYNC
+// ============================================
+
+model SyncOutbox {
+  id        String        @id @default(uuid())
+  userId    String        @map("user_id")
+  operation SyncOperation
+
+  // What to sync
+  tableName String                 @map("table_name")
+  recordId  String                 @map("record_id")
+  payload   Json
+
+  // Sync status
+  retryCount Int       @default(0) @map("retry_count")
+  lastError  String?   @map("last_error")
+  syncedAt   DateTime? @map("synced_at")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([syncedAt])
+  @@map("sync_outbox")
+}
+
+// ============================================
+// DAILY STATS (Materialized View Alternative)
+// ============================================
+
+model DailyStats {
+  id     String   @id @default(uuid())
+  userId String   @map("user_id")
+  date   DateTime @db.Date
+
+  // Aggregated data
+  totalSeconds   Int @default(0) @map("total_seconds")
+  sessionCount   Int @default(0) @map("session_count")
+  tasksCompleted Int @default(0) @map("tasks_completed")
+  pomodoroCount  Int @default(0) @map("pomodoro_count")
+  breakSeconds   Int @default(0) @map("break_seconds")
+
+  // By project (JSON for flexibility)
+  projectBreakdown Json @default("{}") @map("project_breakdown")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+  @@map("daily_stats")
+}

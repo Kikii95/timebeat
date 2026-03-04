@@ -1,0 +1,27 @@
+{
+  "name": "@timebeat/core",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./timer": "./src/timer/index.ts",
+    "./sync": "./src/sync/index.ts"
+  },
+  "scripts": {
+    "check:types": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@timebeat/constants": "workspace:*",
+    "@timebeat/types": "workspace:*",
+    "@timebeat/utils": "workspace:*",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  }
+}
