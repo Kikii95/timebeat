@@ -7,7 +7,7 @@
     "frontendDist": "../../web/out",
     "devUrl": "http://localhost:3000",
     "beforeDevCommand": "cd ../.. && pnpm dev:web",
-    "beforeBuildCommand": "cd ../.. && STATIC_EXPORT=true pnpm build:web"
+    "beforeBuildCommand": "cd ../.. && pnpm cross-env STATIC_EXPORT=true pnpm build:web"
   },
   "app": {
     "windows": [
