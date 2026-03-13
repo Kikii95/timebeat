@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "echo 'PWD:' && pwd && echo 'LS:' && ls -la && echo 'PARENT:' && ls -la ..",
+  "buildCommand": "cd .. && pnpm turbo build --filter=@timebeat/web --force && cp -r apps/web/.next apps/.next && cp -r apps/web/public apps/public",
   "devCommand": "pnpm dev:web",
   "installCommand": "corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install",
   "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ':!apps/desktop' ':!apps/mobile' ':!*.md'"
