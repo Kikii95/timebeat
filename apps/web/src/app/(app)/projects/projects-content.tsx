@@ -6,37 +6,60 @@ import type { Project } from "@timebeat/types";
 import {
   Button,
   Dialog,
-  DialogFooter,
   ProjectForm,
   ProjectList,
+  Skeleton,
 } from "@timebeat/ui";
-import { createProject } from "@/app/actions/projects";
+import {
+  useProjects,
+  useCreateProject,
+  type CreateProjectInput,
+} from "@timebeat/hooks";
 
 interface ProjectsContentProps {
-  initialProjects: Project[];
-  error: string | null;
+  initialProjects?: Project[] | null;
+  error?: string | null;
 }
 
 export function ProjectsContent({
   initialProjects,
-  error,
+  error: initialError,
 }: ProjectsContentProps) {
   const router = useRouter();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [formError, setFormError] = useState<string | null>(null);
 
+  // Use client-side data fetching
+  const { data: fetchedProjects, isLoading, error: fetchError } = useProjects();
+  const createProjectMutation = useCreateProject();
+
+  // Use initial data or fetched data
+  const projects = fetchedProjects ?? initialProjects ?? [];
+  const error = fetchError?.message ?? initialError;
+
   const handleCreateProject = async (formData: FormData) => {
     setFormError(null);
 
-    startTransition(async () => {
-      const result = await createProject(formData);
+    const projectInput: CreateProjectInput = {
+      name: formData.get("name") as string,
+      description: (formData.get("description") as string) || undefined,
+      type: (formData.get("type") as CreateProjectInput["type"]) || "PERSONAL",
+      color: (formData.get("color") as string) || "#3B82F6",
+      icon: (formData.get("icon") as string) || undefined,
+      stack: [],
+      platform: [],
+    };
 
-      if (result.success && result.data?.id) {
+    startTransition(async () => {
+      try {
+        const result = await createProjectMutation.mutateAsync(projectInput);
         setIsCreateOpen(false);
-        router.push(`/projects/${result.data.id}`);
-      } else {
-        setFormError(result.error ?? "Failed to create project");
+        router.push(`/projects/${result.id}`);
+      } catch (err) {
+        setFormError(
+          err instanceof Error ? err.message : "Failed to create project",
+        );
       }
     });
   };
@@ -44,6 +67,10 @@ export function ProjectsContent({
   const handleSelectProject = (project: Project) => {
     router.push(`/projects/${project.id}`);
   };
+
+  if (isLoading && !initialProjects) {
+    return <ProjectsSkeleton />;
+  }
 
   return (
     <div className="space-y-6">
@@ -66,9 +93,9 @@ export function ProjectsContent({
       )}
 
       {/* Projects list */}
-      {initialProjects.length > 0 ? (
+      {projects.length > 0 ? (
         <ProjectList
-          projects={initialProjects}
+          projects={projects}
           onSelect={handleSelectProject}
           view="grid"
         />
@@ -104,10 +131,37 @@ export function ProjectsContent({
         <ProjectForm
           onSubmit={handleCreateProject}
           onCancel={() => setIsCreateOpen(false)}
-          isSubmitting={isPending}
+          isSubmitting={isPending || createProjectMutation.isPending}
           submitLabel="Create Project"
         />
       </Dialog>
+    </div>
+  );
+}
+
+function ProjectsSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <Skeleton className="h-8 w-32" />
+          <Skeleton className="mt-2 h-5 w-48" />
+        </div>
+        <Skeleton className="h-10 w-32" />
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="rounded-lg border border-[var(--color-border)] p-4"
+          >
+            <Skeleton className="h-6 w-32" />
+            <Skeleton className="mt-2 h-4 w-full" />
+            <Skeleton className="mt-4 h-4 w-24" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

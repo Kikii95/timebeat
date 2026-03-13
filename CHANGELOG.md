@@ -18,6 +18,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.2] - 2026-03-13
+
+### Changed
+
+**Architecture Refactoring — Dual-mode Support**
+
+Major architecture refactoring to enable Next.js static export for Tauri desktop builds.
+
+**Problem**: Next.js Server Components + server-side DB access incompatible with `output: 'export'`
+
+**Solution**: Dual-mode architecture supporting both SSR (web/Vercel) and SPA (desktop/Tauri)
+
+- Refactored 5 pages to dual-mode pattern (dashboard, projects, projects/[id], timer, settings)
+- Created wrapper components (`*-content.tsx`) for client-side data fetching
+- Added 6 React Query hooks (`@timebeat/hooks`):
+  - `useProjects`, `useActiveProjects`, `useProject`, `useCreateProject`, `useUpdateProject`, `useDeleteProject`
+  - `useSessions`, `useRecentSessions`, `useSessionsByProject`, `useCreateSession`
+  - `useTasks`, `useTasksByProject`, `useCreateTask`, `useUpdateTask`, `useDeleteTask`
+  - `useDashboardStats`
+  - `useSettings`, `useUpdateSettings`, `useCurrentUser`
+- Replaced server actions with React Query mutations in settings and timer pages
+- Added client-side OAuth callback handler (`/callback/page.tsx`) for desktop auth flow
+- Updated CI workflow to use `build:desktop` script
+
+### Added
+
+- `@tanstack/react-query` package for client-side data fetching
+- `build:desktop` task in `turbo.json` with proper env configuration
+- `build:desktop` script in web app: `cross-env STATIC_EXPORT=true next build`
+
+### Technical
+
+- `STATIC_EXPORT` env var controls build mode
+- Dynamic imports prevent bundling server code in static export
+- React Query provides caching, refetching, and optimistic updates
+- Wrapper component pattern: page.tsx → content.tsx delegation
+
+---
+
 ## [1.0.1] - 2026-03-13
 
 ### Fixed
@@ -192,7 +231,8 @@ First complete release with all P0 features implemented.
 
 | Version | Date       | Codename  | Status     |
 | ------- | ---------- | --------- | ---------- |
-| 1.0.1   | 2026-03-13 | Hotfix    | ✅ Current |
+| 1.0.2   | 2026-03-13 | Dual-mode | ✅ Current |
+| 1.0.1   | 2026-03-13 | Hotfix    | ✅ Done    |
 | 1.0.0   | 2026-03-12 | MVP       | ✅ Done    |
 | 0.4.0   | 2026-03-12 | Desktop   | ✅ Done    |
 | 0.3.0   | 2026-03-11 | Tasks     | ✅ Done    |
@@ -201,7 +241,8 @@ First complete release with all P0 features implemented.
 
 ---
 
-[Unreleased]: https://github.com/kiki/timebeat/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/kiki/timebeat/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/kiki/timebeat/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/kiki/timebeat/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/kiki/timebeat/compare/v0.4.0...v1.0.0
 [0.4.0]: https://github.com/kiki/timebeat/compare/v0.3.0...v0.4.0

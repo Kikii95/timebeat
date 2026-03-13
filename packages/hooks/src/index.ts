@@ -8,6 +8,67 @@ import { useTimerStore } from "@timebeat/core";
 import { TimerState } from "@timebeat/types";
 import { TIMER_CONSTANTS } from "@timebeat/constants";
 
+// === DATA HOOKS (Client-side fetching for static export) ===
+
+export {
+  useProjects,
+  useActiveProjects,
+  useProject,
+  useProjectStats,
+  useCreateProject,
+  useUpdateProject,
+  useDeleteProject,
+  useArchiveProject,
+  projectKeys,
+  type ProjectFilters,
+  type CreateProjectInput,
+  type UpdateProjectInput,
+  type ProjectStats,
+} from "./use-projects";
+
+export {
+  useSessionsByProject,
+  useTodaySessions,
+  useSessionsByDateRange,
+  useCreateSession,
+  useUpdateSession,
+  sessionKeys,
+  type CreateSessionInput,
+  type UpdateSessionInput as UpdateSessionInputData,
+} from "./use-sessions";
+
+export {
+  useTasksByProject,
+  useTask,
+  useInProgressTasks,
+  usePendingTasks,
+  useCreateTask,
+  useUpdateTask,
+  useDeleteTask,
+  useCompleteTask,
+  taskKeys,
+  type CreateTaskInput,
+  type UpdateTaskInput,
+} from "./use-tasks";
+
+export {
+  useDashboardStats,
+  useCurrentUser,
+  dashboardKeys,
+  type DashboardStats,
+} from "./use-dashboard";
+
+export {
+  useSettings,
+  useUpdateSettings,
+  settingsKeys,
+  type UpdateSettingsInput,
+} from "./use-settings";
+
+export { getSupabaseClient } from "./supabase";
+
+// === UTILITY HOOKS ===
+
 /**
  * Hook to manage timer tick interval
  * Only ticks when timer is in RUNNING or BREAK state

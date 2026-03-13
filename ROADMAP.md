@@ -12,7 +12,8 @@
 | v0.2.0  | Core      | Timer, projects, basic UI    | 2026-03-10 | ✅ Done        |
 | v0.3.0  | Tasks     | Task management, dashboard   | 2026-03-11 | ✅ Done        |
 | v0.4.0  | Desktop   | Tauri integration, tray      | 2026-03-12 | ✅ Done        |
-| v1.0.0  | MVP       | Full P0, ready for daily use | 2026-03-12 | ✅ **Current** |
+| v1.0.0  | MVP       | Full P0, ready for daily use | 2026-03-12 | ✅ Done        |
+| v1.0.2  | Dual-mode | Desktop build fix            | 2026-03-13 | ✅ **Current** |
 | v1.1.0  | Goals     | Goals & objectives system    | Q2 2026    | 📋 Planned     |
 | v1.2.0  | Mobile    | iOS & Android apps           | Q2 2026    | 📋 Planned     |
 | v2.0.0  | Cloud     | Full sync, advanced features | Q3 2026    | 💭 Future      |
@@ -88,7 +89,7 @@
 
 ---
 
-## ✅ v1.0.0 — MVP (Current Release)
+## ✅ v1.0.0 — MVP
 
 **Status**: ✅ Complete
 **Released**: 2026-03-12
@@ -109,6 +110,37 @@
 - **Components**: ~40
 - **Build size**: 102 kB shared JS
 - **Build time**: < 5s (cached)
+
+---
+
+## ✅ v1.0.2 — Dual-mode (Current Release)
+
+**Status**: ✅ Complete
+**Released**: 2026-03-13
+
+### Problem
+
+Next.js Server Components + server-side DB access incompatible with `output: 'export'` required for Tauri desktop builds.
+
+### Solution
+
+Dual-mode architecture supporting both SSR (web/Vercel) and SPA (desktop/Tauri).
+
+### Deliverables
+
+- [x] Conditional static export via `STATIC_EXPORT` env var
+- [x] Wrapper component pattern for all 5 app pages
+- [x] React Query hooks for client-side data fetching (6 hook files)
+- [x] Client-side OAuth callback handler for desktop
+- [x] Updated CI workflow for desktop builds
+- [x] `@tanstack/react-query` integration
+
+### Technical Details
+
+- **Pattern**: Server page → Client content wrapper
+- **Data fetching**: Server Components (web) / React Query (desktop)
+- **Auth**: Server cookies (web) / Client Supabase (desktop)
+- **Build**: `pnpm build` (web) / `pnpm --filter @timebeat/web build:desktop` (desktop)
 
 ---
 
@@ -185,7 +217,8 @@ v0.1.0  [████████████████████] 100% ✅
 v0.2.0  [████████████████████] 100% ✅
 v0.3.0  [████████████████████] 100% ✅
 v0.4.0  [████████████████████] 100% ✅
-v1.0.0  [████████████████████] 100% ✅ ← CURRENT
+v1.0.0  [████████████████████] 100% ✅
+v1.0.2  [████████████████████] 100% ✅ ← CURRENT
 v1.1.0  [░░░░░░░░░░░░░░░░░░░░]   0%
 v1.2.0  [░░░░░░░░░░░░░░░░░░░░]   0%
 v2.0.0  [░░░░░░░░░░░░░░░░░░░░]   0%
@@ -195,14 +228,16 @@ v2.0.0  [░░░░░░░░░░░░░░░░░░░░]   0%
 
 ## 📝 Version History
 
-| Version | Date       | Notes                             |
-| ------- | ---------- | --------------------------------- |
-| v1.0.0  | 2026-03-12 | **MVP Release** — All P0 features |
-| v0.4.0  | 2026-03-12 | Desktop app with Tauri            |
-| v0.3.0  | 2026-03-11 | Tasks & Dashboard                 |
-| v0.2.0  | 2026-03-10 | Core functionality                |
-| v0.1.0  | 2026-03-04 | Bootstrap complete                |
+| Version | Date       | Notes                                  |
+| ------- | ---------- | -------------------------------------- |
+| v1.0.2  | 2026-03-13 | **Dual-mode** — Desktop build fix      |
+| v1.0.1  | 2026-03-13 | Hotfix — Vercel config fix             |
+| v1.0.0  | 2026-03-12 | **MVP Release** — All P0 features      |
+| v0.4.0  | 2026-03-12 | Desktop app with Tauri                 |
+| v0.3.0  | 2026-03-11 | Tasks & Dashboard                      |
+| v0.2.0  | 2026-03-10 | Core functionality                     |
+| v0.1.0  | 2026-03-04 | Bootstrap complete                     |
 
 ---
 
-_Last updated: 2026-03-12_
+_Last updated: 2026-03-13_

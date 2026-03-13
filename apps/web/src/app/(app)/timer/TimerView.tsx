@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { useTimerStore } from "@timebeat/core";
-import { useTimerTick } from "@timebeat/hooks";
+import { useTimerTick, useCreateSession } from "@timebeat/hooks";
 import { TimerState, SessionType, type Project } from "@timebeat/types";
 import {
   TimerDisplay,
@@ -13,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@timebeat/ui";
-import { saveSession } from "@/app/actions/sessions";
 
 interface TimerViewProps {
   projects: Project[];
@@ -36,9 +35,11 @@ export function TimerView({ projects }: TimerViewProps) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
     currentProject?.id ?? null,
   );
-  const [isPending, startTransition] = useTransition();
   const [saveError, setSaveError] = useState<string | null>(null);
   const [sessionStartTime, setSessionStartTime] = useState<Date | null>(null);
+
+  // Use client-side mutation for saving sessions
+  const createSessionMutation = useCreateSession();
 
   // Start the tick interval when running
   useTimerTick();
@@ -62,25 +63,23 @@ export function TimerView({ projects }: TimerViewProps) {
     start(selectedProject ?? undefined);
   };
 
-  const handleStop = () => {
+  const handleStop = async () => {
     const session = stopTimer();
 
     if (session && selectedProjectId && sessionStartTime) {
-      startTransition(async () => {
-        const result = await saveSession({
+      try {
+        await createSessionMutation.mutateAsync({
           projectId: selectedProjectId,
           type: mode === "TIMED" ? SessionType.TIMED : SessionType.FREE,
           plannedMinutes: planned ? Math.ceil(planned / 60) : null,
-          startedAt: sessionStartTime.toISOString(),
-          endedAt: new Date().toISOString(),
+          startedAt: sessionStartTime,
+          endedAt: new Date(),
           totalSeconds: elapsed,
           pausedSeconds: 0,
         });
-
-        if (!result.success) {
-          setSaveError(result.error ?? "Failed to save session");
-        }
-      });
+      } catch (err) {
+        setSaveError(err instanceof Error ? err.message : "Failed to save session");
+      }
     }
 
     setSessionStartTime(null);
@@ -116,7 +115,7 @@ export function TimerView({ projects }: TimerViewProps) {
         onStop={handleStop}
         onStartBreak={handleStartBreak}
         onEndBreak={handleEndBreak}
-        disabled={isPending}
+        disabled={createSessionMutation.isPending}
         className="justify-center"
       />
 

@@ -1,34 +1,29 @@
 import type { Metadata } from "next";
-import type { Project } from "@timebeat/types";
-import { projectService } from "@/lib/services/project.service";
-import { TimerView } from "./TimerView";
+import { TimerContent } from "./timer-content";
 
 export const metadata: Metadata = {
   title: "Timer",
   description: "Track your time",
 };
 
-export default async function TimerPage() {
-  let projects: Project[];
+const isStaticExport = process.env.STATIC_EXPORT === "true";
 
-  try {
-    projects = await projectService.getActive();
-  } catch {
-    projects = [];
+async function getServerData() {
+  if (isStaticExport) {
+    return { projects: [] };
   }
 
-  return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      {/* Page header */}
-      <div className="text-center">
-        <h1 className="text-2xl font-semibold">Timer</h1>
-        <p className="text-[var(--color-text-muted)]">
-          Track your focused work sessions
-        </p>
-      </div>
+  try {
+    const { projectService } = await import("@/lib/services/project.service");
+    const projects = await projectService.getActive();
+    return { projects };
+  } catch {
+    return { projects: [] };
+  }
+}
 
-      {/* Timer component */}
-      <TimerView projects={projects} />
-    </div>
-  );
+export default async function TimerPage() {
+  const { projects } = await getServerData();
+
+  return <TimerContent initialProjects={projects} />;
 }

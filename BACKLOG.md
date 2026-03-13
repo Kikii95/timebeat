@@ -221,7 +221,8 @@
 - Some P0 features deferred to P1 (non-critical)
 - P1 features targeted for v1.1.0 - v1.2.0
 - P2/P3 features based on user feedback
+- **v1.0.2**: Architecture refactored to dual-mode (SSR web + SPA desktop) — enables Tauri static export builds
 
 ---
 
-_Last updated: 2026-03-12_
+_Last updated: 2026-03-13_

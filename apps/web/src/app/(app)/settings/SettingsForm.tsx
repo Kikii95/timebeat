@@ -2,42 +2,47 @@
 
 import { useState } from "react";
 import { Button, Input, Label } from "@timebeat/ui";
+import { useUpdateSettings } from "@timebeat/hooks";
 import type { UserSettings } from "@timebeat/types";
-import {
-  updateTimerSettings,
-  updateNotificationSettings,
-  updateTheme,
-} from "@/app/actions/settings";
 
 interface SettingsFormProps {
   settings: UserSettings;
 }
 
 export function TimerSettingsForm({ settings }: SettingsFormProps) {
-  const [isPending, setIsPending] = useState(false);
   const [message, setMessage] = useState<{
     type: "success" | "error";
     text: string;
   } | null>(null);
 
-  async function handleSubmit(formData: FormData) {
-    setIsPending(true);
+  const updateMutation = useUpdateSettings();
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setMessage(null);
 
-    const result = await updateTimerSettings(formData);
+    const formData = new FormData(e.currentTarget);
 
-    if (result.success) {
+    try {
+      await updateMutation.mutateAsync({
+        pomodoroWorkMinutes: Number(formData.get("pomodoroWorkMinutes")),
+        pomodoroBreakMinutes: Number(formData.get("pomodoroBreakMinutes")),
+        pomodoroLongBreakMinutes: Number(formData.get("pomodoroLongBreakMinutes")),
+        pomodoroSessionsUntilLongBreak: Number(formData.get("pomodoroSessionsUntilLongBreak")),
+      });
       setMessage({ type: "success", text: "Timer settings saved!" });
-    } else {
-      setMessage({ type: "error", text: result.error || "Failed to save" });
+    } catch (err) {
+      setMessage({
+        type: "error",
+        text: err instanceof Error ? err.message : "Failed to save",
+      });
     }
 
-    setIsPending(false);
     setTimeout(() => setMessage(null), 3000);
   }
 
   return (
-    <form action={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="pomodoroWorkMinutes">Work Duration (min)</Label>
@@ -88,8 +93,8 @@ export function TimerSettingsForm({ settings }: SettingsFormProps) {
       </div>
 
       <div className="flex items-center gap-3">
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Saving..." : "Save Timer Settings"}
+        <Button type="submit" disabled={updateMutation.isPending}>
+          {updateMutation.isPending ? "Saving..." : "Save Timer Settings"}
         </Button>
         {message && (
           <span
@@ -112,9 +117,10 @@ export function NotificationSettingsForm({ settings }: SettingsFormProps) {
     settings.enableNotifications,
   );
   const [enableSounds, setEnableSounds] = useState(settings.enableSounds);
-  const [isPending, setIsPending] = useState(false);
   const [permissionStatus, setPermissionStatus] =
     useState<NotificationPermission | null>(null);
+
+  const updateMutation = useUpdateSettings();
 
   // Check notification permission on mount
   useState(() => {
@@ -131,21 +137,19 @@ export function NotificationSettingsForm({ settings }: SettingsFormProps) {
   }
 
   async function handleToggle(key: "notifications" | "sounds", value: boolean) {
-    setIsPending(true);
-
-    const formData = new FormData();
     if (key === "notifications") {
-      formData.set("enableNotifications", String(value));
-      formData.set("enableSounds", String(enableSounds));
       setEnableNotifications(value);
+      await updateMutation.mutateAsync({
+        enableNotifications: value,
+        enableSounds,
+      });
     } else {
-      formData.set("enableNotifications", String(enableNotifications));
-      formData.set("enableSounds", String(value));
       setEnableSounds(value);
+      await updateMutation.mutateAsync({
+        enableNotifications,
+        enableSounds: value,
+      });
     }
-
-    await updateNotificationSettings(formData);
-    setIsPending(false);
   }
 
   return (
@@ -176,7 +180,7 @@ export function NotificationSettingsForm({ settings }: SettingsFormProps) {
         <ToggleSwitch
           checked={enableNotifications}
           onChange={(v) => handleToggle("notifications", v)}
-          disabled={isPending || permissionStatus === "denied"}
+          disabled={updateMutation.isPending || permissionStatus === "denied"}
         />
       </div>
 
@@ -190,7 +194,7 @@ export function NotificationSettingsForm({ settings }: SettingsFormProps) {
         <ToggleSwitch
           checked={enableSounds}
           onChange={(v) => handleToggle("sounds", v)}
-          disabled={isPending}
+          disabled={updateMutation.isPending}
         />
       </div>
     </div>
@@ -199,13 +203,12 @@ export function NotificationSettingsForm({ settings }: SettingsFormProps) {
 
 export function ThemeSelector({ settings }: SettingsFormProps) {
   const [theme, setTheme] = useState(settings.theme);
-  const [isPending, setIsPending] = useState(false);
+
+  const updateMutation = useUpdateSettings();
 
   async function handleThemeChange(newTheme: "light" | "dark" | "system") {
-    setIsPending(true);
     setTheme(newTheme);
-    await updateTheme(newTheme);
-    setIsPending(false);
+    await updateMutation.mutateAsync({ theme: newTheme });
 
     // Apply theme to document
     if (typeof window !== "undefined") {
@@ -233,7 +236,7 @@ export function ThemeSelector({ settings }: SettingsFormProps) {
         <button
           key={t.value}
           onClick={() => handleThemeChange(t.value)}
-          disabled={isPending}
+          disabled={updateMutation.isPending}
           className={`flex flex-1 flex-col items-center gap-2 rounded-lg border p-4 transition-colors ${
             theme === t.value
               ? "border-[var(--color-primary-500)] bg-[var(--color-primary-50)]"

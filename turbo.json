@@ -8,6 +8,11 @@
       "outputs": [".next/**", "!.next/cache/**", "dist/**", "out/**"],
       "env": ["NEXT_PUBLIC_*", "SUPABASE_*", "STATIC_EXPORT", "SKIP_ENV_VALIDATION"]
     },
+    "build:desktop": {
+      "dependsOn": ["^build"],
+      "outputs": ["out/**"],
+      "env": ["STATIC_EXPORT", "SKIP_ENV_VALIDATION", "NEXT_PUBLIC_*", "SUPABASE_*"]
+    },
     "dev": {
       "cache": false,
       "persistent": true

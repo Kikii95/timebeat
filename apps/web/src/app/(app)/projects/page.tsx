@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import type { Project } from "@timebeat/types";
-import { projectService } from "@/lib/services/project.service";
 import { ProjectsContent } from "./projects-content";
 
 export const metadata: Metadata = {
@@ -8,15 +7,28 @@ export const metadata: Metadata = {
   description: "Manage your projects",
 };
 
-export default async function ProjectsPage() {
-  let projects: Project[] = [];
-  let error: string | null = null;
+const isStaticExport = process.env.STATIC_EXPORT === "true";
+
+async function getServerData(): Promise<{
+  projects: Project[];
+  error: string | null;
+}> {
+  if (isStaticExport) {
+    return { projects: [], error: null };
+  }
 
   try {
-    projects = await projectService.getAll();
+    const { projectService } = await import("@/lib/services/project.service");
+    const projects = await projectService.getAll();
+    return { projects, error: null };
   } catch (e) {
-    error = e instanceof Error ? e.message : "Failed to load projects";
+    const error = e instanceof Error ? e.message : "Failed to load projects";
+    return { projects: [], error };
   }
+}
+
+export default async function ProjectsPage() {
+  const { projects, error } = await getServerData();
 
   return <ProjectsContent initialProjects={projects} error={error} />;
 }
