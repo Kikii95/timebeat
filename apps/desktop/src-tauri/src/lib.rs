@@ -72,10 +72,10 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_notification::init())
-        .setup(|app| {
-            // Setup tray on desktop
-            #[cfg(desktop)]
-            setup_tray(app)?;
+        .setup(|_app| {
+            // Tray temporarily disabled for Windows Insider compatibility
+            // #[cfg(desktop)]
+            // setup_tray(app)?;
             Ok(())
         })
         .manage(commands::AppState::default())
