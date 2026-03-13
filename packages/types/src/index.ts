@@ -6,45 +6,45 @@
 // === ENUMS ===
 
 export enum ProjectType {
-  PERSONAL = 'PERSONAL',
-  WORK = 'WORK',
-  FREELANCE = 'FREELANCE',
-  LEARNING = 'LEARNING',
-  OPEN_SOURCE = 'OPEN_SOURCE',
+  PERSONAL = "PERSONAL",
+  WORK = "WORK",
+  FREELANCE = "FREELANCE",
+  LEARNING = "LEARNING",
+  OPEN_SOURCE = "OPEN_SOURCE",
 }
 
 export enum ProjectStatus {
-  ACTIVE = 'ACTIVE',
-  ON_HOLD = 'ON_HOLD',
-  COMPLETED = 'COMPLETED',
-  ARCHIVED = 'ARCHIVED',
+  ACTIVE = "ACTIVE",
+  ON_HOLD = "ON_HOLD",
+  COMPLETED = "COMPLETED",
+  ARCHIVED = "ARCHIVED",
 }
 
 export enum TaskStatus {
-  TODO = 'TODO',
-  IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED',
+  TODO = "TODO",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
 }
 
 export enum SessionType {
-  FREE = 'FREE',
-  TIMED = 'TIMED',
-  POMODORO = 'POMODORO',
+  FREE = "FREE",
+  TIMED = "TIMED",
+  POMODORO = "POMODORO",
 }
 
 export enum GoalPeriod {
-  DAILY = 'DAILY',
-  WEEKLY = 'WEEKLY',
-  MONTHLY = 'MONTHLY',
-  CUSTOM = 'CUSTOM',
+  DAILY = "DAILY",
+  WEEKLY = "WEEKLY",
+  MONTHLY = "MONTHLY",
+  CUSTOM = "CUSTOM",
 }
 
 export enum TimerState {
-  IDLE = 'IDLE',
-  RUNNING = 'RUNNING',
-  PAUSED = 'PAUSED',
-  BREAK = 'BREAK',
+  IDLE = "IDLE",
+  RUNNING = "RUNNING",
+  PAUSED = "PAUSED",
+  BREAK = "BREAK",
 }
 
 // === INTERFACES ===
@@ -67,7 +67,7 @@ export interface UserSettings {
   pomodoroSessionsUntilLongBreak: number;
   enableNotifications: boolean;
   enableSounds: boolean;
-  theme: 'light' | 'dark' | 'system';
+  theme: "light" | "dark" | "system";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -144,7 +144,7 @@ export interface Goal {
 export interface SyncOutbox {
   id: string;
   userId: string;
-  operation: 'CREATE' | 'UPDATE' | 'DELETE';
+  operation: "CREATE" | "UPDATE" | "DELETE";
   tableName: string;
   recordId: string;
   payload: Record<string, unknown>;
@@ -155,7 +155,7 @@ export interface SyncOutbox {
 
 // === TIMER STATE ===
 
-export type TimerMode = 'FREE' | 'TIMED';
+export type TimerMode = "FREE" | "TIMED";
 
 export interface TimerStore {
   // State

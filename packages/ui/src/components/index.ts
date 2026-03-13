@@ -3,10 +3,10 @@
  */
 
 // Primitives
-export * from '../primitives';
+export * from "../primitives";
 
 // Composite
-export * from '../composite';
+export * from "../composite";
 
 // Utils
-export { cn } from '../utils/cn';
+export { cn } from "../utils/cn";

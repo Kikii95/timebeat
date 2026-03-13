@@ -17,7 +17,10 @@ interface ProjectsContentProps {
   error: string | null;
 }
 
-export function ProjectsContent({ initialProjects, error }: ProjectsContentProps) {
+export function ProjectsContent({
+  initialProjects,
+  error,
+}: ProjectsContentProps) {
   const router = useRouter();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -93,7 +96,9 @@ export function ProjectsContent({ initialProjects, error }: ProjectsContentProps
       >
         {formError && (
           <div className="mb-4 rounded-lg border border-[var(--color-danger-200)] bg-[var(--color-danger-50)] p-3">
-            <p className="text-sm text-[var(--color-danger-700)]">{formError}</p>
+            <p className="text-sm text-[var(--color-danger-700)]">
+              {formError}
+            </p>
           </div>
         )}
         <ProjectForm

@@ -67,6 +67,7 @@ timer.start(project, task); // no plannedMinutes
 ```
 
 **UI**:
+
 - Shows elapsed time counting up
 - No progress bar
 - Stop button always visible
@@ -81,6 +82,7 @@ timer.start(project, task, 180); // 180 minutes
 ```
 
 **UI**:
+
 - Shows remaining time counting down
 - Progress bar fills up
 - Alert at 100%
@@ -131,9 +133,11 @@ interface TimerStore {
 
 ```typescript
 persist(
-  (set, get) => ({ /* store */ }),
+  (set, get) => ({
+    /* store */
+  }),
   {
-    name: 'timebeat:timer',
+    name: "timebeat:timer",
     partialize: (state) => ({
       state: state.state,
       currentSession: state.currentSession,
@@ -143,20 +147,20 @@ persist(
       pausedSeconds: state.pausedSeconds,
       breaks: state.breaks,
     }),
-  }
-)
+  },
+);
 ```
 
 ### Recovery on Restart
 
 ```typescript
 function recoverTimerState() {
-  const persisted = localStorage.getItem('timebeat:timer');
+  const persisted = localStorage.getItem("timebeat:timer");
   if (!persisted) return;
 
   const state = JSON.parse(persisted);
 
-  if (state.state === 'RUNNING' && state.currentSession) {
+  if (state.state === "RUNNING" && state.currentSession) {
     const lastTickTime = new Date(state.currentSession.updatedAt);
     const now = new Date();
     const missedSeconds = Math.floor((now - lastTickTime) / 1000);
@@ -181,7 +185,7 @@ function recoverTimerState() {
 
 ```typescript
 // Handle visibility change
-document.addEventListener('visibilitychange', () => {
+document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     // Tab hidden - save timestamp
     saveLastTickTime();
@@ -210,11 +214,13 @@ fn update_tray_timer(elapsed: u64) {
 ### Mobile (Capacitor)
 
 **Android**:
+
 - Foreground Service for background timer
 - Notification with progress
 - SQLite via capacitor-sqlite
 
 **iOS**:
+
 - Background Task API (limited)
 - Local notifications for alerts
 - Core Data / SQLite
@@ -236,6 +242,7 @@ Shows current timer state.
 ```
 
 **Variants**:
+
 - `compact` — For tray/widget
 - `full` — For main dashboard
 - `mini` — For header bar
@@ -277,7 +284,7 @@ function useTimerTick() {
   const state = useTimerStore((s) => s.state);
 
   useEffect(() => {
-    if (state === 'RUNNING' || state === 'PAUSED' || state === 'BREAK') {
+    if (state === "RUNNING" || state === "PAUSED" || state === "BREAK") {
       const interval = setInterval(tick, 1000);
       return () => clearInterval(interval);
     }
@@ -290,13 +297,13 @@ function useTimerTick() {
 ```typescript
 // Emitted when timer state changes
 type TimerEvent =
-  | { type: 'STARTED'; session: Session }
-  | { type: 'PAUSED' }
-  | { type: 'RESUMED' }
-  | { type: 'STOPPED'; session: Session }
-  | { type: 'BREAK_STARTED' }
-  | { type: 'BREAK_ENDED' }
-  | { type: 'MILESTONE'; minutes: number }; // Every 25 minutes
+  | { type: "STARTED"; session: Session }
+  | { type: "PAUSED" }
+  | { type: "RESUMED" }
+  | { type: "STOPPED"; session: Session }
+  | { type: "BREAK_STARTED" }
+  | { type: "BREAK_ENDED" }
+  | { type: "MILESTONE"; minutes: number }; // Every 25 minutes
 ```
 
 ## Edge Cases
@@ -332,14 +339,14 @@ type TimerEvent =
 ### Unit Tests
 
 ```typescript
-describe('TimerStore', () => {
-  it('should start timer with project', () => {});
-  it('should track elapsed time', () => {});
-  it('should pause and resume', () => {});
-  it('should save session on stop', () => {});
-  it('should handle breaks', () => {});
-  it('should persist state', () => {});
-  it('should recover from crash', () => {});
+describe("TimerStore", () => {
+  it("should start timer with project", () => {});
+  it("should track elapsed time", () => {});
+  it("should pause and resume", () => {});
+  it("should save session on stop", () => {});
+  it("should handle breaks", () => {});
+  it("should persist state", () => {});
+  it("should recover from crash", () => {});
 });
 ```
 
@@ -351,4 +358,4 @@ describe('TimerStore', () => {
 
 ---
 
-*This specification defines the timer behavior for Timebeat.*
+_This specification defines the timer behavior for Timebeat._

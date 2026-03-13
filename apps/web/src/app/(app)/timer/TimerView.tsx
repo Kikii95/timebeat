@@ -34,7 +34,7 @@ export function TimerView({ projects }: TimerViewProps) {
   const endBreak = useTimerStore((s) => s.endBreak);
 
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
-    currentProject?.id ?? null
+    currentProject?.id ?? null,
   );
   const [isPending, startTransition] = useTransition();
   const [saveError, setSaveError] = useState<string | null>(null);

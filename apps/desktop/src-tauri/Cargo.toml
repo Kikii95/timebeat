@@ -1,6 +1,6 @@
 [package]
 name = "timebeat"
-version = "0.0.1"
+version = "1.0.0"
 description = "Time tracking for developers"
 authors = ["Timebeat"]
 edition = "2021"

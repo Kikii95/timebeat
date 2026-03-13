@@ -14,12 +14,13 @@ Timebeat uses notifications to keep users informed about their time tracking ses
 
 Remind user to take a break after continuous work.
 
-| Setting | Default | Range |
-|---------|---------|-------|
-| Interval | 25 min | 15-60 min |
-| Enabled | true | — |
+| Setting  | Default | Range     |
+| -------- | ------- | --------- |
+| Interval | 25 min  | 15-60 min |
+| Enabled  | true    | —         |
 
 **Content**:
+
 ```
 Title: Time for a break! ☕
 Body: You've been working for 25 minutes. Take a 5-minute break.
@@ -31,6 +32,7 @@ Actions: [Take Break] [Snooze 5m] [Dismiss]
 Alert when planned time is reached.
 
 **Content**:
+
 ```
 Title: Session complete! 🎉
 Body: Your 3-hour session on "Timebeat" is finished.
@@ -41,11 +43,12 @@ Actions: [Stop Timer] [Continue +30m] [Dismiss]
 
 Warn user about unusually long sessions.
 
-| Trigger | Default |
-|---------|---------|
+| Trigger   | Default   |
+| --------- | --------- |
 | Same task | > 5 hours |
 
 **Content**:
+
 ```
 Title: Long session detected ⚠️
 Body: You've been on "Fix auth bug" for over 5 hours.
@@ -57,12 +60,14 @@ Actions: [Take Break] [Switch Task] [Dismiss]
 Notify about goal milestones.
 
 **Triggers**:
+
 - 50% of goal reached
 - 90% of goal reached
 - Goal completed
 - Goal missed (end of period)
 
 **Content (completion)**:
+
 ```
 Title: Goal achieved! 🏆
 Body: You hit your weekly goal of 40 hours.
@@ -73,13 +78,14 @@ Actions: [View Stats] [Dismiss]
 
 Optional health-focused notifications.
 
-| Type | Default Interval |
-|------|------------------|
-| Hydration | 2 hours |
-| Stretch | 1 hour |
-| Fresh air | 4 hours |
+| Type      | Default Interval |
+| --------- | ---------------- |
+| Hydration | 2 hours          |
+| Stretch   | 1 hour           |
+| Fresh air | 4 hours          |
 
 **Content (hydration)**:
+
 ```
 Title: Stay hydrated! 💧
 Body: Time to drink some water.
@@ -93,18 +99,18 @@ Actions: [Done] [Snooze] [Dismiss]
 ```typescript
 async function showNotification(title: string, options: NotificationOptions) {
   // Check permission
-  if (Notification.permission === 'default') {
+  if (Notification.permission === "default") {
     await Notification.requestPermission();
   }
 
-  if (Notification.permission !== 'granted') {
-    console.warn('Notifications not permitted');
+  if (Notification.permission !== "granted") {
+    console.warn("Notifications not permitted");
     return;
   }
 
   const notification = new Notification(title, {
-    icon: '/icons/notification.png',
-    badge: '/icons/badge.png',
+    icon: "/icons/notification.png",
+    badge: "/icons/badge.png",
     ...options,
   });
 
@@ -118,6 +124,7 @@ async function showNotification(title: string, options: NotificationOptions) {
 ```
 
 **Limitations**:
+
 - Requires HTTPS
 - Permission can be denied
 - No actions on some browsers
@@ -142,6 +149,7 @@ fn send_notification(app: &AppHandle, title: &str, body: &str) {
 ```
 
 **Features**:
+
 - Native OS notifications
 - Actions supported
 - Works in background
@@ -152,9 +160,13 @@ fn send_notification(app: &AppHandle, title: &str, body: &str) {
 Using `@capacitor/local-notifications`:
 
 ```typescript
-import { LocalNotifications } from '@capacitor/local-notifications';
+import { LocalNotifications } from "@capacitor/local-notifications";
 
-async function scheduleNotification(title: string, body: string, delay: number) {
+async function scheduleNotification(
+  title: string,
+  body: string,
+  delay: number,
+) {
   await LocalNotifications.schedule({
     notifications: [
       {
@@ -162,9 +174,9 @@ async function scheduleNotification(title: string, body: string, delay: number) 
         title,
         body,
         schedule: { at: new Date(Date.now() + delay) },
-        sound: 'notification.wav',
-        actionTypeId: 'TIMER_ACTIONS',
-        extra: { type: 'break_reminder' },
+        sound: "notification.wav",
+        actionTypeId: "TIMER_ACTIONS",
+        extra: { type: "break_reminder" },
       },
     ],
   });
@@ -172,11 +184,13 @@ async function scheduleNotification(title: string, body: string, delay: number) 
 ```
 
 **iOS**:
+
 - Request permission on first use
 - Background notifications limited
 - Rich notifications with actions
 
 **Android**:
+
 - Notification channels
 - Foreground service notification
 - Full action support
@@ -338,12 +352,12 @@ stop() {
 
 ### Sound Files
 
-| Sound | File | Duration |
-|-------|------|----------|
-| Break reminder | `break.wav` | 2s |
-| Session end | `complete.wav` | 3s |
-| Warning | `warning.wav` | 1s |
-| Goal achieved | `achievement.wav` | 3s |
+| Sound          | File              | Duration |
+| -------------- | ----------------- | -------- |
+| Break reminder | `break.wav`       | 2s       |
+| Session end    | `complete.wav`    | 3s       |
+| Warning        | `warning.wav`     | 1s       |
+| Goal achieved  | `achievement.wav` | 3s       |
 
 ### Playing Sounds
 
@@ -358,7 +372,7 @@ class SoundService {
   }
 
   async loadSounds() {
-    const soundFiles = ['break', 'complete', 'warning', 'achievement'];
+    const soundFiles = ["break", "complete", "warning", "achievement"];
     for (const name of soundFiles) {
       const response = await fetch(`/sounds/${name}.wav`);
       const buffer = await response.arrayBuffer();
@@ -407,7 +421,7 @@ interface DndSettings {
   schedule: {
     enabled: boolean;
     startTime: string; // "22:00"
-    endTime: string;   // "08:00"
+    endTime: string; // "08:00"
   };
   allowCritical: boolean; // Allow session-end even in DND
 }
@@ -421,13 +435,17 @@ interface DndSettings {
 notification.onclick = (event) => {
   const action = event.action;
   switch (action) {
-    case 'take-break':
+    case "take-break":
       timerStore.startBreak();
       break;
-    case 'snooze':
-      notificationService.scheduleOnce('break-reminder', 5 * 60 * 1000, showBreakReminder);
+    case "snooze":
+      notificationService.scheduleOnce(
+        "break-reminder",
+        5 * 60 * 1000,
+        showBreakReminder,
+      );
       break;
-    case 'dismiss':
+    case "dismiss":
       // Do nothing
       break;
   }
@@ -441,10 +459,16 @@ Actions are handled via deep links or native callbacks.
 
 ```typescript
 // Capacitor
-LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
-  const { actionId, notification: { extra } } = notification;
-  handleNotificationAction(actionId, extra);
-});
+LocalNotifications.addListener(
+  "localNotificationActionPerformed",
+  (notification) => {
+    const {
+      actionId,
+      notification: { extra },
+    } = notification;
+    handleNotificationAction(actionId, extra);
+  },
+);
 ```
 
 ## Testing
@@ -452,11 +476,11 @@ LocalNotifications.addListener('localNotificationActionPerformed', (notification
 ### Unit Tests
 
 ```typescript
-describe('NotificationService', () => {
-  it('should schedule recurring notification', () => {});
-  it('should cancel notification', () => {});
-  it('should respect DND settings', () => {});
-  it('should play sound when enabled', () => {});
+describe("NotificationService", () => {
+  it("should schedule recurring notification", () => {});
+  it("should cancel notification", () => {});
+  it("should respect DND settings", () => {});
+  it("should play sound when enabled", () => {});
 });
 ```
 
@@ -471,4 +495,4 @@ describe('NotificationService', () => {
 
 ---
 
-*This specification defines notification behavior for Timebeat.*
+_This specification defines notification behavior for Timebeat._

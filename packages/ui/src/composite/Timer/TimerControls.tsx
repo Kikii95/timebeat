@@ -1,7 +1,7 @@
-import { forwardRef, type HTMLAttributes } from 'react';
-import { TimerState } from '@timebeat/types';
-import { cn } from '../../utils/cn';
-import { Button } from '../../primitives/Button';
+import { forwardRef, type HTMLAttributes } from "react";
+import { TimerState } from "@timebeat/types";
+import { cn } from "../../utils/cn";
+import { Button } from "../../primitives/Button";
 
 export interface TimerControlsProps extends HTMLAttributes<HTMLDivElement> {
   state: TimerState;
@@ -30,7 +30,7 @@ export const TimerControls = forwardRef<HTMLDivElement, TimerControlsProps>(
       showBreakButton = true,
       ...props
     },
-    ref
+    ref,
   ) => {
     const isRunning = state === TimerState.RUNNING;
     const isPaused = state === TimerState.PAUSED;
@@ -40,7 +40,7 @@ export const TimerControls = forwardRef<HTMLDivElement, TimerControlsProps>(
     return (
       <div
         ref={ref}
-        className={cn('flex justify-center gap-3', className)}
+        className={cn("flex justify-center gap-3", className)}
         {...props}
       >
         {isIdle && (
@@ -56,11 +56,7 @@ export const TimerControls = forwardRef<HTMLDivElement, TimerControlsProps>(
 
         {isRunning && (
           <>
-            <Button
-              onClick={onPause}
-              disabled={disabled}
-              variant="secondary"
-            >
+            <Button onClick={onPause} disabled={disabled} variant="secondary">
               ⏸️ Pause
             </Button>
             {showBreakButton && (
@@ -72,11 +68,7 @@ export const TimerControls = forwardRef<HTMLDivElement, TimerControlsProps>(
                 ☕ Break
               </Button>
             )}
-            <Button
-              onClick={onStop}
-              disabled={disabled}
-              variant="danger"
-            >
+            <Button onClick={onStop} disabled={disabled} variant="danger">
               ⏹️ Stop
             </Button>
           </>
@@ -92,11 +84,7 @@ export const TimerControls = forwardRef<HTMLDivElement, TimerControlsProps>(
             >
               ▶️ Resume
             </Button>
-            <Button
-              onClick={onStop}
-              disabled={disabled}
-              variant="danger"
-            >
+            <Button onClick={onStop} disabled={disabled} variant="danger">
               ⏹️ Stop
             </Button>
           </>
@@ -114,7 +102,7 @@ export const TimerControls = forwardRef<HTMLDivElement, TimerControlsProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
-TimerControls.displayName = 'TimerControls';
+TimerControls.displayName = "TimerControls";

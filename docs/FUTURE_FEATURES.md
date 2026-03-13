@@ -6,15 +6,15 @@
 
 ## 📅 Release Timeline
 
-| Version | Codename | Focus | ETA | Features |
-|---------|----------|-------|-----|----------|
-| v1.1.0 | Goals | Objectives & Goals | Q2 2026 | 6 features |
-| v1.2.0 | Mobile | iOS & Android | Q2 2026 | 8 features |
-| v1.3.0 | Sync | Offline-first | Q3 2026 | 6 features |
-| v2.0.0 | Cloud | Advanced sync | Q3 2026 | 5 features |
-| v2.1.0 | Pomodoro | Full workflow | Q4 2026 | 5 features |
-| v2.2.0 | Integrations | GitHub, Calendar | Q4 2026 | 6 features |
-| v3.0.0 | AI | Smart features | 2027 | 4 features |
+| Version | Codename     | Focus              | ETA     | Features   |
+| ------- | ------------ | ------------------ | ------- | ---------- |
+| v1.1.0  | Goals        | Objectives & Goals | Q2 2026 | 6 features |
+| v1.2.0  | Mobile       | iOS & Android      | Q2 2026 | 8 features |
+| v1.3.0  | Sync         | Offline-first      | Q3 2026 | 6 features |
+| v2.0.0  | Cloud        | Advanced sync      | Q3 2026 | 5 features |
+| v2.1.0  | Pomodoro     | Full workflow      | Q4 2026 | 5 features |
+| v2.2.0  | Integrations | GitHub, Calendar   | Q4 2026 | 6 features |
+| v3.0.0  | AI           | Smart features     | 2027    | 4 features |
 
 ---
 
@@ -25,6 +25,7 @@
 **Description**: Users can set time-based goals for projects.
 
 **UI Mockup**:
+
 ```
 ┌────────────────────────────────────────────┐
 │  🎯 Create Goal                            │
@@ -44,17 +45,18 @@
 ```
 
 **Data Model**:
+
 ```typescript
 interface Goal {
   id: string;
   userId: string;
   projectId: string;
-  type: 'DAILY' | 'WEEKLY' | 'MONTHLY';
+  type: "DAILY" | "WEEKLY" | "MONTHLY";
   targetMinutes: number;
   startDate: Date;
   endDate: Date;
   repeat: boolean;
-  status: 'ACTIVE' | 'COMPLETED' | 'FAILED' | 'ARCHIVED';
+  status: "ACTIVE" | "COMPLETED" | "FAILED" | "ARCHIVED";
   createdAt: Date;
 }
 
@@ -64,11 +66,12 @@ interface GoalProgress {
   periodEnd: Date;
   currentMinutes: number;
   percentage: number;
-  status: 'ON_TRACK' | 'BEHIND' | 'COMPLETED';
+  status: "ON_TRACK" | "BEHIND" | "COMPLETED";
 }
 ```
 
 **Implementation**:
+
 1. Add `Goal` and `GoalProgress` tables to Prisma schema
 2. Create `GoalService` with CRUD operations
 3. Create `useGoals` hook
@@ -83,6 +86,7 @@ interface GoalProgress {
 **Description**: Dashboard widget showing goal progress.
 
 **UI**:
+
 ```
 ┌─────────────────────────────────────────────┐
 │  📊 Weekly Goals                            │
@@ -105,6 +109,7 @@ interface GoalProgress {
 ### TB-102: Goal Notifications
 
 **Types**:
+
 - `GOAL_50_PERCENT` — "You're halfway to your goal!"
 - `GOAL_90_PERCENT` — "Almost there! 10% left"
 - `GOAL_COMPLETED` — "🎉 Goal achieved!"
@@ -117,6 +122,7 @@ interface GoalProgress {
 ### TB-120: Capacitor Setup
 
 **Structure**:
+
 ```
 apps/mobile/
 ├── android/
@@ -136,6 +142,7 @@ apps/mobile/
 ```
 
 **Capacitor Plugins**:
+
 ```json
 {
   "dependencies": {
@@ -181,9 +188,10 @@ class TimerService : Service() {
 ```
 
 **Capacitor Plugin Bridge**:
+
 ```typescript
 // src/lib/capacitor/timer-service.ts
-import { registerPlugin } from '@capacitor/core';
+import { registerPlugin } from "@capacitor/core";
 
 interface TimerServicePlugin {
   startService(options: { projectName: string }): Promise<void>;
@@ -191,7 +199,7 @@ interface TimerServicePlugin {
   getElapsed(): Promise<{ seconds: number }>;
 }
 
-const TimerService = registerPlugin<TimerServicePlugin>('TimerService');
+const TimerService = registerPlugin<TimerServicePlugin>("TimerService");
 export default TimerService;
 ```
 
@@ -226,6 +234,7 @@ class BackgroundTimer {
 ### TB-124: Home Screen Widget
 
 **Android Widget**:
+
 ```xml
 <!-- android/app/src/main/res/layout/timer_widget.xml -->
 <LinearLayout>
@@ -236,6 +245,7 @@ class BackgroundTimer {
 ```
 
 **iOS Widget** (WidgetKit):
+
 ```swift
 struct TimerWidget: Widget {
     var body: some WidgetConfiguration {
@@ -256,6 +266,7 @@ struct TimerWidget: Widget {
 ### TB-130: SQLite Local Database
 
 **Schema** (same as Supabase, local):
+
 ```sql
 -- Local SQLite
 CREATE TABLE sessions_local (
@@ -282,6 +293,7 @@ CREATE TABLE sync_queue (
 ```
 
 **Sync Flow**:
+
 ```
 ┌──────────────┐     ┌───────────────┐     ┌─────────────┐
 │ Local SQLite │ ──▶ │  Sync Queue   │ ──▶ │  Supabase   │
@@ -303,7 +315,7 @@ CREATE TABLE sync_queue (
 interface SyncConflict {
   localRecord: Session;
   remoteRecord: Session;
-  conflictType: 'UPDATE' | 'DELETE';
+  conflictType: "UPDATE" | "DELETE";
 }
 
 function resolveConflict(conflict: SyncConflict): Session {
@@ -336,11 +348,13 @@ function mergeSession(local: Session, remote: Session): Session {
 ### TB-300: GitHub Integration
 
 **Features**:
+
 - Auto-detect coding sessions from commits
 - Link commits to timer sessions
 - Show GitHub activity in dashboard
 
 **OAuth Flow**:
+
 ```
 User → [Connect GitHub] → GitHub OAuth
                               ↓
@@ -354,6 +368,7 @@ User → [Connect GitHub] → GitHub OAuth
 ```
 
 **Data Model**:
+
 ```typescript
 interface GitHubIntegration {
   userId: string;
@@ -380,11 +395,13 @@ interface CommitSession {
 ### TB-303: VS Code Extension
 
 **Features**:
+
 - Start/stop timer from VS Code
 - Auto-detect project from workspace
 - Show timer in status bar
 
 **Extension Structure**:
+
 ```
 extensions/vscode/
 ├── src/
@@ -397,6 +414,7 @@ extensions/vscode/
 ```
 
 **Commands**:
+
 - `timebeat.start` — Start timer
 - `timebeat.pause` — Pause timer
 - `timebeat.stop` — Stop timer
@@ -411,6 +429,7 @@ extensions/vscode/
 **Description**: AI suggests time estimates based on task description and historical data.
 
 **Implementation**:
+
 ```typescript
 interface TimeEstimate {
   taskDescription: string;
@@ -450,6 +469,7 @@ async function estimateTaskTime(
 ### TB-331: Productivity Insights
 
 **Weekly Report**:
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │  📊 Weekly Productivity Report                              │
@@ -477,6 +497,7 @@ async function estimateTaskTime(
 ### TB-333: Natural Language Task Creation
 
 **Examples**:
+
 ```
 User: "Work on Timebeat mobile app for 2 hours tomorrow morning"
 
@@ -508,13 +529,13 @@ Parsed:
 
 ### Success Criteria
 
-| Feature | Metric | Target |
-|---------|--------|--------|
-| Goals | % users with active goals | > 60% |
-| Mobile | DAU mobile vs web ratio | > 40% |
-| Sync | Sync success rate | > 99% |
-| GitHub | Connected users | > 30% |
-| AI Estimates | Accuracy within 20% | > 70% |
+| Feature      | Metric                    | Target |
+| ------------ | ------------------------- | ------ |
+| Goals        | % users with active goals | > 60%  |
+| Mobile       | DAU mobile vs web ratio   | > 40%  |
+| Sync         | Sync success rate         | > 99%  |
+| GitHub       | Connected users           | > 30%  |
+| AI Estimates | Accuracy within 20%       | > 70%  |
 
 ---
 
@@ -533,4 +554,4 @@ Parsed:
 
 ---
 
-*Last updated: 2026-03-12*
+_Last updated: 2026-03-12_

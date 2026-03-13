@@ -230,7 +230,7 @@ export const sessionService = {
 async function updateProjectStats(
   supabase: Awaited<ReturnType<typeof createClient>>,
   projectId: string,
-  additionalSeconds: number
+  additionalSeconds: number,
 ) {
   // Get current stats
   const { data: project } = await supabase

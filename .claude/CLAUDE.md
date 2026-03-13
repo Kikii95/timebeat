@@ -4,13 +4,13 @@
 
 **Timebeat** is a cross-platform time tracking application for personal productivity.
 
-| Attribute | Value |
-|-----------|-------|
-| **Name** | timebeat |
-| **Category** | perso |
-| **Type** | Monorepo (apps + packages) |
-| **Status** | ✅ MVP v1.0.0 Released |
-| **Path** | `~/projects/perso/timebeat` |
+| Attribute    | Value                       |
+| ------------ | --------------------------- |
+| **Name**     | timebeat                    |
+| **Category** | perso                       |
+| **Type**     | Monorepo (apps + packages)  |
+| **Status**   | ✅ MVP v1.0.0 Released      |
+| **Path**     | `~/projects/perso/timebeat` |
 
 ---
 
@@ -39,15 +39,15 @@ timebeat/
 
 ### Tech Stack
 
-| Layer | Technology | Notes |
-|-------|------------|-------|
-| Frontend | Next.js 15, React 19, Tailwind 4 | SSG for desktop |
-| Desktop | Tauri v2 | Rust backend, ~20MB |
-| Mobile | Capacitor 6 | iOS + Android |
-| Backend | Supabase | PostgreSQL + Auth + Realtime |
-| State | Zustand | Persist middleware |
-| DB Local | SQLite | Offline-first |
-| ORM | Prisma 6 | Type-safe |
+| Layer    | Technology                       | Notes                        |
+| -------- | -------------------------------- | ---------------------------- |
+| Frontend | Next.js 15, React 19, Tailwind 4 | SSG for desktop              |
+| Desktop  | Tauri v2                         | Rust backend, ~20MB          |
+| Mobile   | Capacitor 6                      | iOS + Android                |
+| Backend  | Supabase                         | PostgreSQL + Auth + Realtime |
+| State    | Zustand                          | Persist middleware           |
+| DB Local | SQLite                           | Offline-first                |
+| ORM      | Prisma 6                         | Type-safe                    |
 
 ---
 
@@ -55,29 +55,29 @@ timebeat/
 
 ### Docs Git (source) → sync Obsidian
 
-| Doc | Chemin Git | Quand mettre à jour |
-|-----|------------|---------------------|
-| Backlog | `BACKLOG.md` | Nouvelles features, changement priorité |
-| Roadmap | `ROADMAP.md` | Nouveau milestone, changement planning |
-| Changelog | `CHANGELOG.md` | Chaque version/release |
+| Doc       | Chemin Git     | Quand mettre à jour                     |
+| --------- | -------------- | --------------------------------------- |
+| Backlog   | `BACKLOG.md`   | Nouvelles features, changement priorité |
+| Roadmap   | `ROADMAP.md`   | Nouveau milestone, changement planning  |
+| Changelog | `CHANGELOG.md` | Chaque version/release                  |
 
 ### Docs Obsidian-only
 
-| Doc | Chemin Obsidian | Quand mettre à jour |
-|-----|-----------------|---------------------|
-| Notes | `Projects/Perso/timebeat.md` | Notes générales |
-| Logs | `Projects/Perso/timebeat/_Logs/` | Chaque session |
+| Doc   | Chemin Obsidian                  | Quand mettre à jour |
+| ----- | -------------------------------- | ------------------- |
+| Notes | `Projects/Perso/timebeat.md`     | Notes générales     |
+| Logs  | `Projects/Perso/timebeat/_Logs/` | Chaque session      |
 
 ---
 
 ## 🗄️ Database
 
-| Attribute | Value |
-|-----------|-------|
-| **DB Name** | timebeat (Supabase) |
-| **ORM** | Prisma 6 |
-| **Schema** | `packages/db/prisma/schema.prisma` |
-| **Status** | 🟡 Schema only (no migrations yet) |
+| Attribute   | Value                              |
+| ----------- | ---------------------------------- |
+| **DB Name** | timebeat (Supabase)                |
+| **ORM**     | Prisma 6                           |
+| **Schema**  | `packages/db/prisma/schema.prisma` |
+| **Status**  | 🟡 Schema only (no migrations yet) |
 
 ### Entities
 
@@ -198,16 +198,16 @@ refactor(core): extract timer state machine
 
 ## 🔗 Key Files
 
-| Purpose | Path |
-|---------|------|
+| Purpose     | Path                                          |
+| ----------- | --------------------------------------------- |
 | Root config | `package.json`, `turbo.json`, `tsconfig.json` |
-| Workspace | `pnpm-workspace.yaml` |
-| DB Schema | `packages/db/prisma/schema.prisma` |
-| Timer logic | `packages/core/src/timer/index.ts` |
-| Types | `packages/types/src/index.ts` |
-| Constants | `packages/constants/src/index.ts` |
-| Utils | `packages/utils/src/index.ts` |
-| Hooks | `packages/hooks/src/index.ts` |
+| Workspace   | `pnpm-workspace.yaml`                         |
+| DB Schema   | `packages/db/prisma/schema.prisma`            |
+| Timer logic | `packages/core/src/timer/index.ts`            |
+| Types       | `packages/types/src/index.ts`                 |
+| Constants   | `packages/constants/src/index.ts`             |
+| Utils       | `packages/utils/src/index.ts`                 |
+| Hooks       | `packages/hooks/src/index.ts`                 |
 
 ---
 
@@ -220,13 +220,13 @@ refactor(core): extract timer state machine
 
 ## 📅 Session History
 
-| Date | Focus | Outcome |
-|------|-------|---------|
-| 2026-03-04 | Bootstrap | Structure complete |
-| 2026-03-10 | Core | Auth, Projects, Timer |
-| 2026-03-11 | Tasks | Dashboard, Charts, Settings |
-| 2026-03-12 | MVP | Desktop, Polish, Release v1.0.0 |
+| Date       | Focus     | Outcome                         |
+| ---------- | --------- | ------------------------------- |
+| 2026-03-04 | Bootstrap | Structure complete              |
+| 2026-03-10 | Core      | Auth, Projects, Timer           |
+| 2026-03-11 | Tasks     | Dashboard, Charts, Settings     |
+| 2026-03-12 | MVP       | Desktop, Polish, Release v1.0.0 |
 
 ---
 
-*Last updated: 2026-03-12*
+_Last updated: 2026-03-12_

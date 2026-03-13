@@ -12,19 +12,31 @@ interface ActionResult<T = void> {
 /**
  * Update timer/pomodoro settings
  */
-export async function updateTimerSettings(formData: FormData): Promise<ActionResult> {
+export async function updateTimerSettings(
+  formData: FormData,
+): Promise<ActionResult> {
   try {
     const pomodoroWorkMinutes = Number(formData.get("pomodoroWorkMinutes"));
     const pomodoroBreakMinutes = Number(formData.get("pomodoroBreakMinutes"));
-    const pomodoroLongBreakMinutes = Number(formData.get("pomodoroLongBreakMinutes"));
-    const pomodoroSessionsUntilLongBreak = Number(formData.get("pomodoroSessionsUntilLongBreak"));
+    const pomodoroLongBreakMinutes = Number(
+      formData.get("pomodoroLongBreakMinutes"),
+    );
+    const pomodoroSessionsUntilLongBreak = Number(
+      formData.get("pomodoroSessionsUntilLongBreak"),
+    );
 
     // Validation
     if (pomodoroWorkMinutes < 1 || pomodoroWorkMinutes > 120) {
-      return { success: false, error: "Work duration must be between 1-120 minutes" };
+      return {
+        success: false,
+        error: "Work duration must be between 1-120 minutes",
+      };
     }
     if (pomodoroBreakMinutes < 1 || pomodoroBreakMinutes > 60) {
-      return { success: false, error: "Break duration must be between 1-60 minutes" };
+      return {
+        success: false,
+        error: "Break duration must be between 1-60 minutes",
+      };
     }
 
     await settingsService.update({
@@ -39,7 +51,10 @@ export async function updateTimerSettings(formData: FormData): Promise<ActionRes
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update timer settings",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update timer settings",
     };
   }
 }
@@ -47,7 +62,9 @@ export async function updateTimerSettings(formData: FormData): Promise<ActionRes
 /**
  * Update notification settings
  */
-export async function updateNotificationSettings(formData: FormData): Promise<ActionResult> {
+export async function updateNotificationSettings(
+  formData: FormData,
+): Promise<ActionResult> {
   try {
     const enableNotifications = formData.get("enableNotifications") === "true";
     const enableSounds = formData.get("enableSounds") === "true";
@@ -62,7 +79,10 @@ export async function updateNotificationSettings(formData: FormData): Promise<Ac
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update notification settings",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update notification settings",
     };
   }
 }
@@ -70,7 +90,9 @@ export async function updateNotificationSettings(formData: FormData): Promise<Ac
 /**
  * Update theme setting
  */
-export async function updateTheme(theme: "light" | "dark" | "system"): Promise<ActionResult> {
+export async function updateTheme(
+  theme: "light" | "dark" | "system",
+): Promise<ActionResult> {
   try {
     await settingsService.update({ theme });
     revalidatePath("/settings");

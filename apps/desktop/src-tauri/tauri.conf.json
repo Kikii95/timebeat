@@ -1,13 +1,13 @@
 {
   "$schema": "https://schema.tauri.app/config/2.0.0",
   "productName": "Timebeat",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "identifier": "com.timebeat.app",
   "build": {
     "frontendDist": "../../web/out",
     "devUrl": "http://localhost:3000",
-    "beforeDevCommand": "pnpm --filter @timebeat/web dev",
-    "beforeBuildCommand": "pnpm --filter @timebeat/web build && pnpm --filter @timebeat/web export"
+    "beforeDevCommand": "cd ../.. && pnpm dev:web",
+    "beforeBuildCommand": "cd ../.. && STATIC_EXPORT=true pnpm build:web"
   },
   "app": {
     "windows": [

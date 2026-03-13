@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install",
+  "buildCommand": "pnpm build:web",
+  "outputDirectory": "apps/web/.next",
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ':!apps/desktop' ':!apps/mobile' ':!*.md'",
+  "env": {
+    "TURBO_REMOTE_ONLY": "true"
+  }
+}

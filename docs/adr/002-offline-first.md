@@ -7,12 +7,14 @@
 ## Context
 
 Timebeat must work reliably even without internet connection because:
+
 - Users may have unstable connections
 - Desktop app should work without network
 - Mobile usage in transit/airplane mode
 - Timer must never lose data
 
 The challenge is synchronizing data between:
+
 - Local storage (browser/app)
 - Local SQLite database (desktop/mobile)
 - Supabase PostgreSQL (cloud)
@@ -56,21 +58,23 @@ The challenge is synchronizing data between:
 
 ### Local Storage Strategy
 
-| Platform | Primary Storage | Fallback |
-|----------|-----------------|----------|
-| Web | IndexedDB | localStorage |
-| Desktop (Tauri) | SQLite | — |
-| Mobile (Capacitor) | SQLite | — |
+| Platform           | Primary Storage | Fallback     |
+| ------------------ | --------------- | ------------ |
+| Web                | IndexedDB       | localStorage |
+| Desktop (Tauri)    | SQLite          | —            |
+| Mobile (Capacitor) | SQLite          | —            |
 
 ### Sync Outbox Pattern
 
 When offline:
+
 1. Write operation happens
 2. Data saved to local SQLite
 3. Operation queued in `SyncOutbox` table
 4. UI shows "pending sync" indicator
 
 When online:
+
 1. Sync service processes outbox queue
 2. Operations sent to Supabase in order
 3. Success → remove from outbox
@@ -79,11 +83,13 @@ When online:
 ### Conflict Resolution: Last-Write-Wins
 
 For MVP, using simple LWW (Last Write Wins):
+
 - Each record has `updatedAt` timestamp
 - When syncing, server timestamp wins if newer
 - Client notified of conflicts for manual review (future)
 
 **Why LWW**:
+
 - Simple to implement
 - Good enough for single-user scenarios
 - Can upgrade to CRDT later if needed
@@ -100,7 +106,7 @@ const useTimerStore = create(
       // ... state
     }),
     {
-      name: 'timebeat:timer',
+      name: "timebeat:timer",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         state: state.state,
@@ -108,12 +114,13 @@ const useTimerStore = create(
         elapsedSeconds: state.elapsedSeconds,
         // ... critical fields only
       }),
-    }
-  )
+    },
+  ),
 );
 ```
 
 On app restart:
+
 1. Load persisted timer state
 2. If session was `RUNNING`:
    - Calculate elapsed time since last tick
@@ -124,6 +131,7 @@ On app restart:
 ### Data Flow
 
 **Write (Create Session)**:
+
 ```
 User stops timer
     ↓
@@ -136,6 +144,7 @@ If offline → sync when connection restored
 ```
 
 **Read (Dashboard)**:
+
 ```
 Request data
     ↓
@@ -151,6 +160,7 @@ If newer data → update local → notify UI
 ## Consequences
 
 ### Positive
+
 - App works 100% offline
 - Fast reads (local-first)
 - Data never lost
@@ -158,6 +168,7 @@ If newer data → update local → notify UI
 - Reduced server load
 
 ### Negative
+
 - Increased complexity
 - Storage used on device
 - Potential sync conflicts
@@ -181,4 +192,4 @@ If newer data → update local → notify UI
 
 ---
 
-*This ADR documents the offline-first architecture for Timebeat.*
+_This ADR documents the offline-first architecture for Timebeat._

@@ -29,14 +29,20 @@ interface ProjectDetailContentProps {
   stats: ProjectStats;
 }
 
-const statusColors: Record<string, "success" | "warning" | "primary" | "secondary"> = {
+const statusColors: Record<
+  string,
+  "success" | "warning" | "primary" | "secondary"
+> = {
   ACTIVE: "success",
   ON_HOLD: "warning",
   COMPLETED: "primary",
   ARCHIVED: "secondary",
 };
 
-export function ProjectDetailContent({ project, stats }: ProjectDetailContentProps) {
+export function ProjectDetailContent({
+  project,
+  stats,
+}: ProjectDetailContentProps) {
   const router = useRouter();
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -91,7 +97,10 @@ export function ProjectDetailContent({ project, stats }: ProjectDetailContentPro
     <div className="space-y-6">
       {/* Breadcrumb */}
       <nav className="text-sm text-[var(--color-text-muted)]">
-        <Link href="/projects" className="hover:text-[var(--color-primary-500)]">
+        <Link
+          href="/projects"
+          className="hover:text-[var(--color-primary-500)]"
+        >
           Projects
         </Link>
         <span className="mx-2">/</span>
@@ -103,7 +112,10 @@ export function ProjectDetailContent({ project, stats }: ProjectDetailContentPro
         <div className="flex items-start gap-4">
           <div
             className="flex h-14 w-14 items-center justify-center rounded-xl text-2xl"
-            style={{ backgroundColor: project.color + "20", color: project.color }}
+            style={{
+              backgroundColor: project.color + "20",
+              color: project.color,
+            }}
           >
             {project.icon || project.name.charAt(0).toUpperCase()}
           </div>
@@ -168,19 +180,21 @@ export function ProjectDetailContent({ project, stats }: ProjectDetailContentPro
           title="Tasks"
           value={`${stats.completedTasks}/${stats.taskCount}`}
           icon="✅"
-          description={stats.taskCount > 0
-            ? `${Math.round((stats.completedTasks / stats.taskCount) * 100)}% completed`
-            : undefined
+          description={
+            stats.taskCount > 0
+              ? `${Math.round((stats.completedTasks / stats.taskCount) * 100)}% completed`
+              : undefined
           }
         />
         <StatsCard
           title="Last Session"
-          value={stats.lastSessionAt
-            ? new Intl.DateTimeFormat("en-US", {
-                month: "short",
-                day: "numeric",
-              }).format(stats.lastSessionAt)
-            : "Never"
+          value={
+            stats.lastSessionAt
+              ? new Intl.DateTimeFormat("en-US", {
+                  month: "short",
+                  day: "numeric",
+                }).format(stats.lastSessionAt)
+              : "Never"
           }
           icon="📅"
         />
@@ -251,7 +265,9 @@ export function ProjectDetailContent({ project, stats }: ProjectDetailContentPro
       >
         {formError && (
           <div className="mb-4 rounded-lg border border-[var(--color-danger-200)] bg-[var(--color-danger-50)] p-3">
-            <p className="text-sm text-[var(--color-danger-700)]">{formError}</p>
+            <p className="text-sm text-[var(--color-danger-700)]">
+              {formError}
+            </p>
           </div>
         )}
         <ProjectForm
@@ -272,8 +288,8 @@ export function ProjectDetailContent({ project, stats }: ProjectDetailContentPro
       >
         <div className="space-y-4">
           <p className="text-sm text-[var(--color-text-muted)]">
-            This will permanently delete &quot;{project.name}&quot; and all associated
-            sessions and tasks.
+            This will permanently delete &quot;{project.name}&quot; and all
+            associated sessions and tasks.
           </p>
           <div className="flex items-center justify-end gap-3">
             <Button
@@ -283,11 +299,7 @@ export function ProjectDetailContent({ project, stats }: ProjectDetailContentPro
             >
               Cancel
             </Button>
-            <Button
-              variant="danger"
-              onClick={handleDelete}
-              loading={isPending}
-            >
+            <Button variant="danger" onClick={handleDelete} loading={isPending}>
               Delete Project
             </Button>
           </div>

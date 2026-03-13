@@ -2,26 +2,34 @@
  * Timer state machine and logic
  */
 
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import type {
   TimerStore,
   TimerMode,
   Project,
   Task,
   Session,
-  Break
-} from '@timebeat/types';
-import { TimerState, SessionType } from '@timebeat/types';
-import { STORAGE_KEYS, TIMER_CONSTANTS } from '@timebeat/constants';
-import { generateId } from '@timebeat/utils';
+  Break,
+} from "@timebeat/types";
+import { TimerState, SessionType } from "@timebeat/types";
+import { STORAGE_KEYS, TIMER_CONSTANTS } from "@timebeat/constants";
+import { generateId } from "@timebeat/utils";
 
 const initialState: Pick<
   TimerStore,
-  'state' | 'mode' | 'elapsed' | 'planned' | 'pausedTime' | 'currentSession' | 'currentProject' | 'currentTask' | 'breaks'
+  | "state"
+  | "mode"
+  | "elapsed"
+  | "planned"
+  | "pausedTime"
+  | "currentSession"
+  | "currentProject"
+  | "currentTask"
+  | "breaks"
 > = {
   state: TimerState.IDLE,
-  mode: 'FREE' as TimerMode,
+  mode: "FREE" as TimerMode,
   elapsed: 0,
   planned: null,
   pausedTime: 0,
@@ -37,12 +45,12 @@ export const useTimerStore = create<TimerStore>()(
       ...initialState,
 
       start: (project?: Project, task?: Task, plannedMinutes?: number) => {
-        const mode: TimerMode = plannedMinutes ? 'TIMED' : 'FREE';
+        const mode: TimerMode = plannedMinutes ? "TIMED" : "FREE";
 
         const session: Session = {
           id: generateId(),
-          userId: '', // Set by auth context when saving
-          projectId: project?.id ?? '',
+          userId: "", // Set by auth context when saving
+          projectId: project?.id ?? "",
           taskId: task?.id ?? null,
           type: plannedMinutes ? SessionType.TIMED : SessionType.FREE,
           plannedMinutes: plannedMinutes ?? null,
@@ -100,7 +108,7 @@ export const useTimerStore = create<TimerStore>()(
       startBreak: () => {
         const newBreak: Break = {
           id: generateId(),
-          sessionId: get().currentSession?.id ?? '',
+          sessionId: get().currentSession?.id ?? "",
           startedAt: new Date(),
           endedAt: null,
           durationSeconds: 0,
@@ -120,7 +128,8 @@ export const useTimerStore = create<TimerStore>()(
           if (lastBreak && !lastBreak.endedAt) {
             lastBreak.endedAt = new Date();
             lastBreak.durationSeconds = Math.floor(
-              (lastBreak.endedAt.getTime() - lastBreak.startedAt.getTime()) / 1000
+              (lastBreak.endedAt.getTime() - lastBreak.startedAt.getTime()) /
+                1000,
             );
           }
 
@@ -158,16 +167,16 @@ export const useTimerStore = create<TimerStore>()(
         currentTask: state.currentTask,
         breaks: state.breaks,
       }),
-    }
-  )
+    },
+  ),
 );
 
 // === SELECTORS ===
 
-export const selectIsRunning = (state: TimerStore) => state.state === 'RUNNING';
-export const selectIsPaused = (state: TimerStore) => state.state === 'PAUSED';
-export const selectIsIdle = (state: TimerStore) => state.state === 'IDLE';
-export const selectIsOnBreak = (state: TimerStore) => state.state === 'BREAK';
+export const selectIsRunning = (state: TimerStore) => state.state === "RUNNING";
+export const selectIsPaused = (state: TimerStore) => state.state === "PAUSED";
+export const selectIsIdle = (state: TimerStore) => state.state === "IDLE";
+export const selectIsOnBreak = (state: TimerStore) => state.state === "BREAK";
 
 export const selectRemainingSeconds = (state: TimerStore) => {
   if (!state.planned) return null;

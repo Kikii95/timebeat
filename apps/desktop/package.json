@@ -1,11 +1,11 @@
 {
   "name": "@timebeat/desktop",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "tauri dev",
-    "build": "echo 'Desktop build requires static export, skipping...'",
-    "build:release": "tauri build",
+    "build": "tauri build",
+    "build:debug": "tauri build --debug",
     "tauri": "tauri"
   },
   "devDependencies": {

@@ -26,7 +26,10 @@ export default async function DashboardPage() {
   ]);
 
   // Calculate stats
-  const todaySeconds = todaySessions.reduce((sum, s) => sum + s.totalSeconds, 0);
+  const todaySeconds = todaySessions.reduce(
+    (sum, s) => sum + s.totalSeconds,
+    0,
+  );
 
   // Get week and month totals
   const now = new Date();
@@ -42,7 +45,10 @@ export default async function DashboardPage() {
   ]);
 
   const weekSeconds = weekSessions.reduce((sum, s) => sum + s.totalSeconds, 0);
-  const monthSeconds = monthSessions.reduce((sum, s) => sum + s.totalSeconds, 0);
+  const monthSeconds = monthSessions.reduce(
+    (sum, s) => sum + s.totalSeconds,
+    0,
+  );
 
   // Get recent 5 sessions
   const recentSessions = [...todaySessions].slice(0, 5);
@@ -137,7 +143,7 @@ export default async function DashboardPage() {
               <div className="space-y-3">
                 {recentSessions.map((session) => {
                   const project = projects.find(
-                    (p) => p.id === session.projectId
+                    (p) => p.id === session.projectId,
                   );
                   return (
                     <SessionRow
@@ -267,7 +273,9 @@ function SessionRow({
           </p>
         </div>
       </div>
-      <p className="font-mono text-sm">{formatDuration(session.totalSeconds)}</p>
+      <p className="font-mono text-sm">
+        {formatDuration(session.totalSeconds)}
+      </p>
     </div>
   );
 }

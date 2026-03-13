@@ -24,7 +24,7 @@ export function formatTimer(seconds: number): string {
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
 
-  const pad = (n: number) => n.toString().padStart(2, '0');
+  const pad = (n: number) => n.toString().padStart(2, "0");
 
   if (hours > 0) {
     return `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
@@ -43,20 +43,20 @@ export function minutesToSeconds(minutes: number): number {
 // === DATE FORMATTING ===
 
 export function formatDate(date: Date): string {
-  return date.toLocaleDateString('fr-FR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
+  return date.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
   });
 }
 
 export function formatDateTime(date: Date): string {
-  return date.toLocaleString('fr-FR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+  return date.toLocaleString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
 
@@ -67,7 +67,7 @@ export function formatRelativeTime(date: Date): string {
   const diffHours = Math.floor(diffMs / 3600000);
   const diffDays = Math.floor(diffMs / 86400000);
 
-  if (diffMins < 1) return 'Just now';
+  if (diffMins < 1) return "Just now";
   if (diffMins < 60) return `${diffMins}m ago`;
   if (diffHours < 24) return `${diffHours}h ago`;
   if (diffDays < 7) return `${diffDays}d ago`;
@@ -79,10 +79,10 @@ export function formatRelativeTime(date: Date): string {
 export function slugify(text: string): string {
   return text
     .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 export function truncate(text: string, length: number): string {
@@ -106,7 +106,9 @@ export function generateShortId(): string {
 
 // === COLOR UTILS ===
 
-export function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+export function hexToRgb(
+  hex: string,
+): { r: number; g: number; b: number } | null {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!result || !result[1] || !result[2] || !result[3]) {
     return null;
@@ -118,11 +120,11 @@ export function hexToRgb(hex: string): { r: number; g: number; b: number } | nul
   };
 }
 
-export function getContrastColor(hex: string): 'black' | 'white' {
+export function getContrastColor(hex: string): "black" | "white" {
   const rgb = hexToRgb(hex);
-  if (!rgb) return 'black';
+  if (!rgb) return "black";
   const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
-  return luminance > 0.5 ? 'black' : 'white';
+  return luminance > 0.5 ? "black" : "white";
 }
 
 // === VALIDATION ===
@@ -134,9 +136,9 @@ export function isValidEmail(email: string): boolean {
 
 export function isNonEmpty(value: unknown): boolean {
   if (value === null || value === undefined) return false;
-  if (typeof value === 'string') return value.trim().length > 0;
+  if (typeof value === "string") return value.trim().length > 0;
   if (Array.isArray(value)) return value.length > 0;
-  if (typeof value === 'object') return Object.keys(value).length > 0;
+  if (typeof value === "object") return Object.keys(value).length > 0;
   return true;
 }
 
@@ -144,7 +146,7 @@ export function isNonEmpty(value: unknown): boolean {
 
 export function debounce<T extends (...args: unknown[]) => unknown>(
   fn: T,
-  delay: number
+  delay: number,
 ): (...args: Parameters<T>) => void {
   let timeoutId: ReturnType<typeof setTimeout>;
   return (...args: Parameters<T>) => {
@@ -155,7 +157,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
 
 export function throttle<T extends (...args: unknown[]) => unknown>(
   fn: T,
-  limit: number
+  limit: number,
 ): (...args: Parameters<T>) => void {
   let inThrottle = false;
   return (...args: Parameters<T>) => {

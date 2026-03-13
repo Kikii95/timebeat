@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
+
 - Mobile apps (Capacitor 6)
 - Full offline sync
 - Goals & objectives system
@@ -26,6 +27,7 @@ First complete release with all P0 features implemented.
 ### Added
 
 **Authentication**
+
 - Email/password signup and login
 - Magic link authentication
 - Session persistence with Supabase
@@ -33,6 +35,7 @@ First complete release with all P0 features implemented.
 - Password reset flow
 
 **Projects Management**
+
 - Create project with name, color, icon
 - Edit project details
 - Archive/delete project
@@ -40,6 +43,7 @@ First complete release with all P0 features implemented.
 - Project detail view with stats
 
 **Time Tracking**
+
 - Timer with free mode (unlimited)
 - Timer with timed mode (set duration)
 - Pause/Resume functionality
@@ -48,12 +52,14 @@ First complete release with all P0 features implemented.
 - Project selection before starting
 
 **Tasks Management**
+
 - Create tasks within projects
 - Task selection for timer
 - Task completion tracking
 - Task list per project
 
 **Dashboard**
+
 - Today's total time
 - Time breakdown by project (pie chart)
 - Weekly trend chart (bar chart)
@@ -61,6 +67,7 @@ First complete release with all P0 features implemented.
 - Quick timer access
 
 **Settings**
+
 - Timer mode preferences (free/timed)
 - Default duration settings
 - Notification preferences
@@ -68,6 +75,7 @@ First complete release with all P0 features implemented.
 - User profile management
 
 **Desktop App (Tauri v2)**
+
 - System tray integration
 - Timer display in tray
 - Tray menu with quick actions
@@ -75,6 +83,7 @@ First complete release with all P0 features implemented.
 - IPC commands for timer control
 
 **PWA & Polish**
+
 - PWA manifest with icons
 - App shortcuts (Timer, Dashboard)
 - Error boundaries (page + global)
@@ -83,12 +92,14 @@ First complete release with all P0 features implemented.
 - Responsive design
 
 **UI Library (~40 components)**
+
 - Primitives: Button, Input, Select, Card, Badge, etc.
 - Composite: Timer, Project, Task, Dashboard components
 - Layout: AppShell, Sidebar, Header, PageContainer
 - Providers: ThemeProvider, ToastProvider
 
 ### Technical
+
 - Next.js 15 with App Router
 - React 19 with Server Components
 - Tailwind CSS 4 with CSS variables
@@ -103,6 +114,7 @@ First complete release with all P0 features implemented.
 ## [0.4.0] - 2026-03-12
 
 ### Added
+
 - Tauri v2 desktop app setup
 - System tray with timer state
 - IPC commands (get/update timer, notifications)
@@ -114,6 +126,7 @@ First complete release with all P0 features implemented.
 ## [0.3.0] - 2026-03-11
 
 ### Added
+
 - Dashboard with stats cards
 - Weekly chart (Recharts BarChart)
 - Projects chart (Recharts PieChart)
@@ -128,6 +141,7 @@ First complete release with all P0 features implemented.
 ## [0.2.0] - 2026-03-10
 
 ### Added
+
 - Next.js 15 app in `apps/web/`
 - Tailwind CSS 4 configuration
 - Supabase client (browser + server)
@@ -144,6 +158,7 @@ First complete release with all P0 features implemented.
 ## [0.1.0] - 2026-03-04
 
 ### Added
+
 - Initial project structure (monorepo with Turborepo)
 - Package configuration (pnpm workspace)
 - Core packages:
@@ -162,13 +177,13 @@ First complete release with all P0 features implemented.
 
 ## Version History
 
-| Version | Date | Codename | Status |
-|---------|------|----------|--------|
-| 1.0.0 | 2026-03-12 | MVP | ✅ Current |
-| 0.4.0 | 2026-03-12 | Desktop | ✅ Done |
-| 0.3.0 | 2026-03-11 | Tasks | ✅ Done |
-| 0.2.0 | 2026-03-10 | Core | ✅ Done |
-| 0.1.0 | 2026-03-04 | Bootstrap | ✅ Done |
+| Version | Date       | Codename  | Status     |
+| ------- | ---------- | --------- | ---------- |
+| 1.0.0   | 2026-03-12 | MVP       | ✅ Current |
+| 0.4.0   | 2026-03-12 | Desktop   | ✅ Done    |
+| 0.3.0   | 2026-03-11 | Tasks     | ✅ Done    |
+| 0.2.0   | 2026-03-10 | Core      | ✅ Done    |
+| 0.1.0   | 2026-03-04 | Bootstrap | ✅ Done    |
 
 ---
 

@@ -1,16 +1,19 @@
-import { forwardRef, type HTMLAttributes } from 'react';
-import type { Project } from '@timebeat/types';
-import { cn } from '../../utils/cn';
-import { ProjectCard } from './ProjectCard';
-import { Skeleton } from '../../primitives/Skeleton';
+import { forwardRef, type HTMLAttributes } from "react";
+import type { Project } from "@timebeat/types";
+import { cn } from "../../utils/cn";
+import { ProjectCard } from "./ProjectCard";
+import { Skeleton } from "../../primitives/Skeleton";
 
-export interface ProjectListProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> {
+export interface ProjectListProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "onSelect"
+> {
   projects: Project[];
   selectedId?: string | null;
   onSelect?: (project: Project) => void;
   isLoading?: boolean;
   emptyMessage?: string;
-  view?: 'grid' | 'list';
+  view?: "grid" | "list";
 }
 
 export const ProjectList = forwardRef<HTMLDivElement, ProjectListProps>(
@@ -21,21 +24,21 @@ export const ProjectList = forwardRef<HTMLDivElement, ProjectListProps>(
       selectedId,
       onSelect,
       isLoading = false,
-      emptyMessage = 'No projects found',
-      view = 'grid',
+      emptyMessage = "No projects found",
+      view = "grid",
       ...props
     },
-    ref
+    ref,
   ) => {
     if (isLoading) {
       return (
         <div
           ref={ref}
           className={cn(
-            view === 'grid'
-              ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'
-              : 'space-y-3',
-            className
+            view === "grid"
+              ? "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+              : "space-y-3",
+            className,
           )}
           {...props}
         >
@@ -51,8 +54,8 @@ export const ProjectList = forwardRef<HTMLDivElement, ProjectListProps>(
         <div
           ref={ref}
           className={cn(
-            'rounded-lg border border-dashed border-[var(--color-border)] p-8 text-center',
-            className
+            "rounded-lg border border-dashed border-[var(--color-border)] p-8 text-center",
+            className,
           )}
           {...props}
         >
@@ -67,10 +70,10 @@ export const ProjectList = forwardRef<HTMLDivElement, ProjectListProps>(
       <div
         ref={ref}
         className={cn(
-          view === 'grid'
-            ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'
-            : 'space-y-3',
-          className
+          view === "grid"
+            ? "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            : "space-y-3",
+          className,
         )}
         {...props}
       >
@@ -84,10 +87,10 @@ export const ProjectList = forwardRef<HTMLDivElement, ProjectListProps>(
         ))}
       </div>
     );
-  }
+  },
 );
 
-ProjectList.displayName = 'ProjectList';
+ProjectList.displayName = "ProjectList";
 
 // === SKELETON ===
 

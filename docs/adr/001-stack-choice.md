@@ -7,11 +7,13 @@
 ## Context
 
 Building a cross-platform time tracking app (Timebeat) that needs to run on:
+
 - Desktop Windows (primary)
 - Web (PWA)
 - Mobile iOS & Android (secondary)
 
 Requirements:
+
 - Single codebase (maximize code sharing)
 - Native-feeling desktop app
 - Offline support
@@ -25,6 +27,7 @@ Requirements:
 **Chosen over**: Remix, SvelteKit, vanilla React
 
 **Rationale**:
+
 - Next.js 15 has excellent SSG for desktop bundling
 - React 19 brings performance improvements
 - Tailwind 4 is faster and more flexible
@@ -36,6 +39,7 @@ Requirements:
 **Chosen over**: Electron, Wails, Neutralino
 
 **Rationale**:
+
 - ~20MB bundle vs ~150MB for Electron
 - Rust backend for performance and security
 - Native system tray support
@@ -47,6 +51,7 @@ Requirements:
 **Chosen over**: React Native, Flutter, Expo
 
 **Rationale**:
+
 - Shares web codebase (one React codebase)
 - Native capabilities (background tasks, notifications)
 - Simpler than React Native for web-first apps
@@ -58,6 +63,7 @@ Requirements:
 **Chosen over**: Firebase, custom backend, PocketBase
 
 **Rationale**:
+
 - PostgreSQL (familiar, powerful)
 - Built-in Auth with multiple providers
 - Realtime subscriptions out of the box
@@ -70,6 +76,7 @@ Requirements:
 **Chosen over**: Redux, Jotai, Recoil, MobX
 
 **Rationale**:
+
 - Minimal boilerplate
 - Built-in persist middleware (critical for timer)
 - TypeScript-first
@@ -81,6 +88,7 @@ Requirements:
 **Chosen over**: Drizzle, TypeORM, Kysely
 
 **Rationale**:
+
 - Best TypeScript integration
 - Schema-first approach
 - Excellent migrations
@@ -92,6 +100,7 @@ Requirements:
 **Chosen over**: Nx, Lerna, Rush
 
 **Rationale**:
+
 - Incremental builds
 - Remote caching
 - Simple configuration
@@ -101,6 +110,7 @@ Requirements:
 ## Consequences
 
 ### Positive
+
 - Maximum code sharing between platforms
 - Fast development with hot reload
 - Strong typing throughout
@@ -108,12 +118,14 @@ Requirements:
 - Active communities
 
 ### Negative
+
 - Tauri requires Rust knowledge for native features
 - Capacitor has less native capability than React Native
 - Multiple runtimes to manage (Node, Rust, mobile)
 - Supabase vendor lock-in (mitigated by Postgres standard)
 
 ### Risks
+
 - Tauri v2 is relatively new (may have edge cases)
 - React 19 concurrent features need careful handling
 - Offline sync complexity increases with features
@@ -121,17 +133,21 @@ Requirements:
 ## Alternatives Considered
 
 ### Full Native (Swift + Kotlin)
+
 Rejected: Too much duplication, slower development
 
 ### React Native Everywhere
+
 Rejected: Web support not as mature, no desktop
 
 ### Electron
+
 Rejected: Bundle size unacceptable for simple app
 
 ### Firebase
+
 Rejected: NoSQL less suitable, vendor lock-in concerns
 
 ---
 
-*This ADR documents why we chose this specific stack for Timebeat.*
+_This ADR documents why we chose this specific stack for Timebeat._

@@ -27,15 +27,15 @@ Timebeat is a personal time tracking application designed for developers and cre
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | Next.js 15, React 19, Tailwind CSS 4 |
-| **Desktop** | Tauri v2 (Rust backend, ~20MB) |
-| **Mobile** | Capacitor 6 (iOS & Android) |
-| **Backend** | Supabase (PostgreSQL + Auth + Realtime) |
-| **State** | Zustand with persist middleware |
-| **Charts** | Recharts |
-| **Offline DB** | SQLite via Tauri/Capacitor |
+| Layer          | Technology                              |
+| -------------- | --------------------------------------- |
+| **Frontend**   | Next.js 15, React 19, Tailwind CSS 4    |
+| **Desktop**    | Tauri v2 (Rust backend, ~20MB)          |
+| **Mobile**     | Capacitor 6 (iOS & Android)             |
+| **Backend**    | Supabase (PostgreSQL + Auth + Realtime) |
+| **State**      | Zustand with persist middleware         |
+| **Charts**     | Recharts                                |
+| **Offline DB** | SQLite via Tauri/Capacitor              |
 
 ---
 
@@ -140,12 +140,12 @@ pnpm --filter @timebeat/db db:studio
 
 See [ROADMAP.md](./ROADMAP.md) for detailed planning.
 
-| Phase | Focus | Status |
-|-------|-------|--------|
+| Phase  | Focus                                 | Status         |
+| ------ | ------------------------------------- | -------------- |
 | **P0** | Core timer, projects, basic dashboard | 🚧 In Progress |
-| **P1** | Goals, advanced analytics, mobile | 📋 Planned |
-| **P2** | Notifications, cloud sync | 📋 Planned |
-| **P3** | Integrations, automation | 💭 Future |
+| **P1** | Goals, advanced analytics, mobile     | 📋 Planned     |
+| **P2** | Notifications, cloud sync             | 📋 Planned     |
+| **P3** | Integrations, automation              | 💭 Future      |
 
 ---
 

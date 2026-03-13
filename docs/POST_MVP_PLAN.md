@@ -15,12 +15,12 @@
 
 ### Time Estimates
 
-| Version | Duration | Start | End |
-|---------|----------|-------|-----|
-| v1.1.0 | 2 weeks | 2026-03-18 | 2026-04-01 |
-| v1.2.0 | 4 weeks | 2026-04-01 | 2026-04-29 |
-| v1.3.0 | 2 weeks | 2026-04-29 | 2026-05-13 |
-| v2.0.0 | 3 weeks | 2026-05-13 | 2026-06-03 |
+| Version | Duration | Start      | End        |
+| ------- | -------- | ---------- | ---------- |
+| v1.1.0  | 2 weeks  | 2026-03-18 | 2026-04-01 |
+| v1.2.0  | 4 weeks  | 2026-04-01 | 2026-04-29 |
+| v1.3.0  | 2 weeks  | 2026-04-29 | 2026-05-13 |
+| v2.0.0  | 3 weeks  | 2026-05-13 | 2026-06-03 |
 
 ---
 
@@ -31,6 +31,7 @@
 #### Day 1-2: Database & Service Layer
 
 **Task 1**: Update Prisma schema
+
 ```prisma
 // packages/db/prisma/schema.prisma
 
@@ -82,47 +83,51 @@ enum GoalStatus {
 ```
 
 **Task 2**: Create GoalService
+
 ```typescript
 // apps/web/src/lib/services/goal.service.ts
 export class GoalService {
-  async create(data: CreateGoalInput): Promise<Goal>
-  async update(id: string, data: UpdateGoalInput): Promise<Goal>
-  async delete(id: string): Promise<void>
-  async getById(id: string): Promise<Goal | null>
-  async getByUser(userId: string): Promise<Goal[]>
-  async getActiveByProject(projectId: string): Promise<Goal[]>
-  async calculateProgress(goalId: string): Promise<GoalProgress>
-  async updateAllProgress(): Promise<void> // Cron job
+  async create(data: CreateGoalInput): Promise<Goal>;
+  async update(id: string, data: UpdateGoalInput): Promise<Goal>;
+  async delete(id: string): Promise<void>;
+  async getById(id: string): Promise<Goal | null>;
+  async getByUser(userId: string): Promise<Goal[]>;
+  async getActiveByProject(projectId: string): Promise<Goal[]>;
+  async calculateProgress(goalId: string): Promise<GoalProgress>;
+  async updateAllProgress(): Promise<void>; // Cron job
 }
 ```
 
 **Task 3**: Server Actions
+
 ```typescript
 // apps/web/src/app/actions/goals.ts
-'use server'
-export async function createGoal(formData: FormData)
-export async function updateGoal(id: string, formData: FormData)
-export async function deleteGoal(id: string)
+"use server";
+export async function createGoal(formData: FormData);
+export async function updateGoal(id: string, formData: FormData);
+export async function deleteGoal(id: string);
 ```
 
 #### Day 3-4: Progress Calculation
 
 **Task 4**: Progress calculator
+
 ```typescript
 // packages/core/src/goals/calculator.ts
 export function calculateGoalProgress(
   goal: Goal,
-  sessions: Session[]
+  sessions: Session[],
 ): GoalProgress {
-  const periodSessions = sessions.filter(s =>
-    s.startTime >= goal.startDate &&
-    s.startTime <= goal.endDate &&
-    s.projectId === goal.projectId
+  const periodSessions = sessions.filter(
+    (s) =>
+      s.startTime >= goal.startDate &&
+      s.startTime <= goal.endDate &&
+      s.projectId === goal.projectId,
   );
 
   const totalMinutes = periodSessions.reduce(
     (sum, s) => sum + Math.floor(s.durationSeconds / 60),
-    0
+    0,
   );
 
   return {
@@ -131,12 +136,13 @@ export function calculateGoalProgress(
     periodEnd: goal.endDate,
     totalMinutes,
     percentage: Math.min(100, (totalMinutes / goal.targetMinutes) * 100),
-    status: totalMinutes >= goal.targetMinutes ? 'COMPLETED' : 'ON_TRACK'
+    status: totalMinutes >= goal.targetMinutes ? "COMPLETED" : "ON_TRACK",
   };
 }
 ```
 
 **Task 5**: Hook useGoals
+
 ```typescript
 // packages/hooks/src/useGoals.ts
 export function useGoals(projectId?: string) {
@@ -157,6 +163,7 @@ export function useGoals(projectId?: string) {
 #### Day 5-6: UI Components
 
 **Task 6**: GoalForm component
+
 ```
 packages/ui/src/composite/Goal/
 ├── GoalForm.tsx        # Create/edit form
@@ -167,6 +174,7 @@ packages/ui/src/composite/Goal/
 ```
 
 **Task 7**: Dashboard integration
+
 - Add goals section to `/dashboard`
 - Show active goals with progress
 - Quick create from dashboard
@@ -174,12 +182,14 @@ packages/ui/src/composite/Goal/
 #### Day 7-8: Pages + Polish
 
 **Task 8**: Goals page
+
 ```typescript
 // apps/web/src/app/(app)/goals/page.tsx
 // List all goals, create new, filter by status/project
 ```
 
 **Task 9**: Goal notifications
+
 ```typescript
 // Trigger notifications at milestones
 // 50%, 90%, 100%
@@ -188,11 +198,13 @@ packages/ui/src/composite/Goal/
 #### Day 9-10: Testing + Deploy
 
 **Task 10**: Tests
+
 - Unit tests for calculator
 - Integration tests for CRUD
 - E2E test for full flow
 
 **Task 11**: Deploy
+
 - Push to production
 - Update CHANGELOG
 - Tag v1.1.0
@@ -230,22 +242,22 @@ npx cap add ios
 ```typescript
 // apps/mobile/src/lib/shared.ts
 // Import from packages
-export { useTimerStore } from '@timebeat/core';
-export { formatDuration, formatTime } from '@timebeat/utils';
-export { TimerState, Project, Session } from '@timebeat/types';
-export { TIMER_CONSTANTS } from '@timebeat/constants';
+export { useTimerStore } from "@timebeat/core";
+export { formatDuration, formatTime } from "@timebeat/utils";
+export { TimerState, Project, Session } from "@timebeat/types";
+export { TIMER_CONSTANTS } from "@timebeat/constants";
 ```
 
 ### Week 2: Core Screens
 
-| Screen | Route | Features |
-|--------|-------|----------|
-| Home | `/` | Quick timer, recent projects |
-| Timer | `/timer` | Full timer controls |
-| Projects | `/projects` | Project list |
-| Project | `/projects/:id` | Project details |
-| Dashboard | `/dashboard` | Stats (simplified) |
-| Settings | `/settings` | Mobile-specific settings |
+| Screen    | Route           | Features                     |
+| --------- | --------------- | ---------------------------- |
+| Home      | `/`             | Quick timer, recent projects |
+| Timer     | `/timer`        | Full timer controls          |
+| Projects  | `/projects`     | Project list                 |
+| Project   | `/projects/:id` | Project details              |
+| Dashboard | `/dashboard`    | Stats (simplified)           |
+| Settings  | `/settings`     | Mobile-specific settings     |
 
 ### Week 3: Native Features
 
@@ -261,18 +273,18 @@ class TimerForegroundService : Service() {
 #### Local Notifications
 
 ```typescript
-import { LocalNotifications } from '@capacitor/local-notifications';
+import { LocalNotifications } from "@capacitor/local-notifications";
 
 async function scheduleBreakReminder(minutes: number) {
   await LocalNotifications.schedule({
     notifications: [
       {
-        title: 'Break Time!',
+        title: "Break Time!",
         body: `You've been working for ${minutes} minutes`,
         id: 1,
         schedule: { at: new Date(Date.now() + minutes * 60 * 1000) },
-      }
-    ]
+      },
+    ],
   });
 }
 ```
@@ -304,7 +316,7 @@ async function scheduleBreakReminder(minutes: number) {
 
 ```typescript
 // packages/db/src/local/index.ts
-import initSqlJs from 'sql.js';
+import initSqlJs from "sql.js";
 
 export async function initLocalDb() {
   const SQL = await initSqlJs();
@@ -406,12 +418,12 @@ export class SyncEngine {
 
 ## ✅ Success Metrics
 
-| Version | Metric | Target |
-|---------|--------|--------|
-| v1.1.0 | Users with goals | > 50% of active users |
-| v1.2.0 | Mobile downloads | 500+ in first month |
-| v1.3.0 | Offline sessions | < 1% data loss |
-| v2.0.0 | Multi-device users | > 30% |
+| Version | Metric             | Target                |
+| ------- | ------------------ | --------------------- |
+| v1.1.0  | Users with goals   | > 50% of active users |
+| v1.2.0  | Mobile downloads   | 500+ in first month   |
+| v1.3.0  | Offline sessions   | < 1% data loss        |
+| v2.0.0  | Multi-device users | > 30%                 |
 
 ---
 
@@ -447,4 +459,4 @@ export class SyncEngine {
 
 ---
 
-*Last updated: 2026-03-12*
+_Last updated: 2026-03-12_

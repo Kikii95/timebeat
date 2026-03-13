@@ -18,7 +18,7 @@ interface ActionResult<T = void> {
  * Create a new task
  */
 export async function createTask(
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionResult<{ id: string }>> {
   try {
     const projectId = formData.get("projectId") as string;
@@ -36,7 +36,9 @@ export async function createTask(
       title: title.trim(),
       description: description?.trim() || null,
       priority: priority ? parseInt(priority, 10) : undefined,
-      estimatedMinutes: estimatedMinutes ? parseInt(estimatedMinutes, 10) : null,
+      estimatedMinutes: estimatedMinutes
+        ? parseInt(estimatedMinutes, 10)
+        : null,
     });
 
     revalidatePath("/dashboard");
@@ -57,7 +59,7 @@ export async function createTask(
  */
 export async function updateTask(
   id: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionResult> {
   try {
     const title = formData.get("title") as string | null;
@@ -68,7 +70,8 @@ export async function updateTask(
 
     const task = await taskService.update(id, {
       title: title?.trim() || undefined,
-      description: description !== null ? description.trim() || null : undefined,
+      description:
+        description !== null ? description.trim() || null : undefined,
       status: status ?? undefined,
       priority: priority !== null ? parseInt(priority, 10) : undefined,
       estimatedMinutes:
@@ -97,7 +100,7 @@ export async function updateTask(
  */
 export async function deleteTask(
   id: string,
-  projectId: string
+  projectId: string,
 ): Promise<ActionResult> {
   try {
     await taskService.delete(id);
@@ -120,7 +123,7 @@ export async function deleteTask(
  */
 export async function completeTask(
   id: string,
-  projectId: string
+  projectId: string,
 ): Promise<ActionResult> {
   try {
     await taskService.complete(id);
@@ -144,7 +147,7 @@ export async function completeTask(
 export async function updateTaskStatus(
   id: string,
   status: TaskStatus,
-  projectId: string
+  projectId: string,
 ): Promise<ActionResult> {
   try {
     await taskService.update(id, {

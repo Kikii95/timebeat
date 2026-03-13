@@ -1,11 +1,14 @@
-import { forwardRef, type FormHTMLAttributes } from 'react';
-import { ProjectType, ProjectStatus, type Project } from '@timebeat/types';
-import { PROJECT_COLORS, DEFAULT_PROJECT_COLOR } from '@timebeat/constants';
-import { cn } from '../../utils/cn';
-import { Input } from '../../primitives/Input';
-import { Button } from '../../primitives/Button';
+import { forwardRef, type FormHTMLAttributes } from "react";
+import { ProjectType, ProjectStatus, type Project } from "@timebeat/types";
+import { PROJECT_COLORS, DEFAULT_PROJECT_COLOR } from "@timebeat/constants";
+import { cn } from "../../utils/cn";
+import { Input } from "../../primitives/Input";
+import { Button } from "../../primitives/Button";
 
-export interface ProjectFormProps extends Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> {
+export interface ProjectFormProps extends Omit<
+  FormHTMLAttributes<HTMLFormElement>,
+  "onSubmit"
+> {
   project?: Project | null;
   onSubmit: (formData: FormData) => void | Promise<void>;
   onCancel?: () => void;
@@ -21,10 +24,10 @@ export const ProjectForm = forwardRef<HTMLFormElement, ProjectFormProps>(
       onSubmit,
       onCancel,
       isSubmitting = false,
-      submitLabel = 'Create Project',
+      submitLabel = "Create Project",
       ...props
     },
-    ref
+    ref,
   ) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -37,14 +40,15 @@ export const ProjectForm = forwardRef<HTMLFormElement, ProjectFormProps>(
     return (
       <form
         ref={ref}
-        className={cn('space-y-4', className)}
+        className={cn("space-y-4", className)}
         onSubmit={handleSubmit}
         {...props}
       >
         {/* Name */}
         <div className="space-y-1.5">
           <label htmlFor="name" className="text-sm font-medium">
-            Project Name <span className="text-[var(--color-danger-500)]">*</span>
+            Project Name{" "}
+            <span className="text-[var(--color-danger-500)]">*</span>
           </label>
           <Input
             id="name"
@@ -67,16 +71,16 @@ export const ProjectForm = forwardRef<HTMLFormElement, ProjectFormProps>(
             id="description"
             name="description"
             placeholder="What is this project about?"
-            defaultValue={project?.description ?? ''}
+            defaultValue={project?.description ?? ""}
             disabled={isSubmitting}
             rows={3}
             className={cn(
-              'w-full rounded-lg border border-[var(--color-border)]',
-              'bg-[var(--color-surface)] px-3 py-2 text-sm',
-              'placeholder:text-[var(--color-text-muted)]',
-              'focus:border-[var(--color-primary-500)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-500)]',
-              'disabled:cursor-not-allowed disabled:opacity-50',
-              'resize-none'
+              "w-full rounded-lg border border-[var(--color-border)]",
+              "bg-[var(--color-surface)] px-3 py-2 text-sm",
+              "placeholder:text-[var(--color-text-muted)]",
+              "focus:border-[var(--color-primary-500)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-500)]",
+              "disabled:cursor-not-allowed disabled:opacity-50",
+              "resize-none",
             )}
           />
         </div>
@@ -94,15 +98,15 @@ export const ProjectForm = forwardRef<HTMLFormElement, ProjectFormProps>(
               defaultValue={project?.type ?? ProjectType.PERSONAL}
               disabled={isSubmitting}
               className={cn(
-                'w-full rounded-lg border border-[var(--color-border)]',
-                'bg-[var(--color-surface)] px-3 py-2 text-sm',
-                'focus:border-[var(--color-primary-500)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-500)]',
-                'disabled:cursor-not-allowed disabled:opacity-50'
+                "w-full rounded-lg border border-[var(--color-border)]",
+                "bg-[var(--color-surface)] px-3 py-2 text-sm",
+                "focus:border-[var(--color-primary-500)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-500)]",
+                "disabled:cursor-not-allowed disabled:opacity-50",
               )}
             >
               {Object.values(ProjectType).map((type) => (
                 <option key={type} value={type}>
-                  {type.toLowerCase().replace('_', ' ')}
+                  {type.toLowerCase().replace("_", " ")}
                 </option>
               ))}
             </select>
@@ -120,15 +124,15 @@ export const ProjectForm = forwardRef<HTMLFormElement, ProjectFormProps>(
                 defaultValue={project?.status ?? ProjectStatus.ACTIVE}
                 disabled={isSubmitting}
                 className={cn(
-                  'w-full rounded-lg border border-[var(--color-border)]',
-                  'bg-[var(--color-surface)] px-3 py-2 text-sm',
-                  'focus:border-[var(--color-primary-500)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-500)]',
-                  'disabled:cursor-not-allowed disabled:opacity-50'
+                  "w-full rounded-lg border border-[var(--color-border)]",
+                  "bg-[var(--color-surface)] px-3 py-2 text-sm",
+                  "focus:border-[var(--color-primary-500)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-500)]",
+                  "disabled:cursor-not-allowed disabled:opacity-50",
                 )}
               >
                 {Object.values(ProjectStatus).map((status) => (
                   <option key={status} value={status}>
-                    {status.toLowerCase().replace('_', ' ')}
+                    {status.toLowerCase().replace("_", " ")}
                   </option>
                 ))}
               </select>
@@ -147,16 +151,18 @@ export const ProjectForm = forwardRef<HTMLFormElement, ProjectFormProps>(
                   name="color"
                   value={color}
                   defaultChecked={
-                    project ? project.color === color : color === DEFAULT_PROJECT_COLOR
+                    project
+                      ? project.color === color
+                      : color === DEFAULT_PROJECT_COLOR
                   }
                   disabled={isSubmitting}
                   className="sr-only peer"
                 />
                 <span
                   className={cn(
-                    'block h-8 w-8 rounded-full border-2 border-transparent',
-                    'peer-checked:border-[var(--color-text)] peer-checked:ring-2 peer-checked:ring-offset-2',
-                    'transition-all'
+                    "block h-8 w-8 rounded-full border-2 border-transparent",
+                    "peer-checked:border-[var(--color-text)] peer-checked:ring-2 peer-checked:ring-offset-2",
+                    "transition-all",
                   )}
                   style={{ backgroundColor: color }}
                 />
@@ -175,7 +181,7 @@ export const ProjectForm = forwardRef<HTMLFormElement, ProjectFormProps>(
             name="icon"
             type="text"
             placeholder="🚀"
-            defaultValue={project?.icon ?? ''}
+            defaultValue={project?.icon ?? ""}
             disabled={isSubmitting}
             maxLength={4}
           />
@@ -191,7 +197,7 @@ export const ProjectForm = forwardRef<HTMLFormElement, ProjectFormProps>(
             name="stack"
             type="text"
             placeholder="React, TypeScript, Node.js"
-            defaultValue={project?.stack?.join(', ') ?? ''}
+            defaultValue={project?.stack?.join(", ") ?? ""}
             disabled={isSubmitting}
           />
           <p className="text-xs text-[var(--color-text-muted)]">
@@ -217,7 +223,7 @@ export const ProjectForm = forwardRef<HTMLFormElement, ProjectFormProps>(
         </div>
       </form>
     );
-  }
+  },
 );
 
-ProjectForm.displayName = 'ProjectForm';
+ProjectForm.displayName = "ProjectForm";

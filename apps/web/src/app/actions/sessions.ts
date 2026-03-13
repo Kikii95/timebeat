@@ -66,15 +66,17 @@ export async function saveSession(data: {
 /**
  * Get today's sessions
  */
-export async function getTodaySessions(): Promise<ActionResult<{
-  sessions: Array<{
-    id: string;
-    projectId: string;
+export async function getTodaySessions(): Promise<
+  ActionResult<{
+    sessions: Array<{
+      id: string;
+      projectId: string;
+      totalSeconds: number;
+      startedAt: string;
+    }>;
     totalSeconds: number;
-    startedAt: string;
-  }>;
-  totalSeconds: number;
-}>> {
+  }>
+> {
   try {
     const sessions = await sessionService.getToday();
 

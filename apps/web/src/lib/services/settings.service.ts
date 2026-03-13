@@ -8,7 +8,10 @@ import type { UserSettings } from "@timebeat/types";
 
 // === DEFAULT VALUES ===
 
-const DEFAULT_SETTINGS: Omit<UserSettings, "id" | "userId" | "createdAt" | "updatedAt"> = {
+const DEFAULT_SETTINGS: Omit<
+  UserSettings,
+  "id" | "userId" | "createdAt" | "updatedAt"
+> = {
   pomodoroWorkMinutes: 25,
   pomodoroBreakMinutes: 5,
   pomodoroLongBreakMinutes: 15,
@@ -85,7 +88,8 @@ export const settingsService = {
       pomodoro_work_minutes: DEFAULT_SETTINGS.pomodoroWorkMinutes,
       pomodoro_break_minutes: DEFAULT_SETTINGS.pomodoroBreakMinutes,
       pomodoro_long_break_minutes: DEFAULT_SETTINGS.pomodoroLongBreakMinutes,
-      pomodoro_sessions_until_long_break: DEFAULT_SETTINGS.pomodoroSessionsUntilLongBreak,
+      pomodoro_sessions_until_long_break:
+        DEFAULT_SETTINGS.pomodoroSessionsUntilLongBreak,
       enable_notifications: DEFAULT_SETTINGS.enableNotifications,
       enable_sounds: DEFAULT_SETTINGS.enableSounds,
       theme: DEFAULT_SETTINGS.theme,
@@ -129,7 +133,8 @@ export const settingsService = {
       updateData.pomodoro_long_break_minutes = data.pomodoroLongBreakMinutes;
     }
     if (data.pomodoroSessionsUntilLongBreak !== undefined) {
-      updateData.pomodoro_sessions_until_long_break = data.pomodoroSessionsUntilLongBreak;
+      updateData.pomodoro_sessions_until_long_break =
+        data.pomodoroSessionsUntilLongBreak;
     }
     if (data.enableNotifications !== undefined) {
       updateData.enable_notifications = data.enableNotifications;

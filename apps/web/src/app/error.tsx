@@ -20,11 +20,15 @@ export default function Error({
         <div className="mb-6 text-6xl">💥</div>
         <h1 className="mb-2 text-2xl font-semibold">Something went wrong</h1>
         <p className="mb-6 text-[var(--color-text-muted)]">
-          An unexpected error occurred. Don&apos;t worry, your timer data is safe.
+          An unexpected error occurred. Don&apos;t worry, your timer data is
+          safe.
         </p>
         <div className="flex justify-center gap-3">
           <Button onClick={reset}>Try again</Button>
-          <Button variant="secondary" onClick={() => (window.location.href = "/dashboard")}>
+          <Button
+            variant="secondary"
+            onClick={() => (window.location.href = "/dashboard")}
+          >
             Go to Dashboard
           </Button>
         </div>

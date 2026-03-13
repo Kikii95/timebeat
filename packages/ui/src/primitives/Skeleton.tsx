@@ -1,5 +1,5 @@
-import { forwardRef, type HTMLAttributes } from 'react';
-import { cn } from '../utils/cn';
+import { forwardRef, type HTMLAttributes } from "react";
+import { cn } from "../utils/cn";
 
 export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -9,13 +9,13 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
       <div
         ref={ref}
         className={cn(
-          'animate-pulse rounded-lg bg-[var(--color-neutral-100)]',
-          className
+          "animate-pulse rounded-lg bg-[var(--color-neutral-100)]",
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 
-Skeleton.displayName = 'Skeleton';
+Skeleton.displayName = "Skeleton";

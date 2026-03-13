@@ -3,7 +3,11 @@
 import { useState } from "react";
 import { Button, Input, Label } from "@timebeat/ui";
 import type { UserSettings } from "@timebeat/types";
-import { updateTimerSettings, updateNotificationSettings, updateTheme } from "@/app/actions/settings";
+import {
+  updateTimerSettings,
+  updateNotificationSettings,
+  updateTheme,
+} from "@/app/actions/settings";
 
 interface SettingsFormProps {
   settings: UserSettings;
@@ -11,7 +15,10 @@ interface SettingsFormProps {
 
 export function TimerSettingsForm({ settings }: SettingsFormProps) {
   const [isPending, setIsPending] = useState(false);
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   async function handleSubmit(formData: FormData) {
     setIsPending(true);
@@ -66,7 +73,9 @@ export function TimerSettingsForm({ settings }: SettingsFormProps) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="pomodoroSessionsUntilLongBreak">Sessions until Long Break</Label>
+          <Label htmlFor="pomodoroSessionsUntilLongBreak">
+            Sessions until Long Break
+          </Label>
           <Input
             id="pomodoroSessionsUntilLongBreak"
             name="pomodoroSessionsUntilLongBreak"
@@ -99,10 +108,13 @@ export function TimerSettingsForm({ settings }: SettingsFormProps) {
 }
 
 export function NotificationSettingsForm({ settings }: SettingsFormProps) {
-  const [enableNotifications, setEnableNotifications] = useState(settings.enableNotifications);
+  const [enableNotifications, setEnableNotifications] = useState(
+    settings.enableNotifications,
+  );
   const [enableSounds, setEnableSounds] = useState(settings.enableSounds);
   const [isPending, setIsPending] = useState(false);
-  const [permissionStatus, setPermissionStatus] = useState<NotificationPermission | null>(null);
+  const [permissionStatus, setPermissionStatus] =
+    useState<NotificationPermission | null>(null);
 
   // Check notification permission on mount
   useState(() => {
@@ -140,7 +152,8 @@ export function NotificationSettingsForm({ settings }: SettingsFormProps) {
     <div className="space-y-4">
       {permissionStatus === "denied" && (
         <div className="rounded-lg bg-[var(--color-warning-100)] p-3 text-sm text-[var(--color-warning-800)]">
-          Notifications are blocked. Please enable them in your browser settings.
+          Notifications are blocked. Please enable them in your browser
+          settings.
         </div>
       )}
 
@@ -198,7 +211,9 @@ export function ThemeSelector({ settings }: SettingsFormProps) {
     if (typeof window !== "undefined") {
       const root = document.documentElement;
       if (newTheme === "system") {
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
         root.classList.toggle("dark", prefersDark);
       } else {
         root.classList.toggle("dark", newTheme === "dark");
@@ -252,7 +267,9 @@ function ToggleSwitch({
       disabled={disabled}
       onClick={() => onChange(!checked)}
       className={`relative h-6 w-11 rounded-full transition-colors ${
-        checked ? "bg-[var(--color-primary-500)]" : "bg-[var(--color-neutral-300)]"
+        checked
+          ? "bg-[var(--color-primary-500)]"
+          : "bg-[var(--color-neutral-300)]"
       } ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
     >
       <span

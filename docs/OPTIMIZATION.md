@@ -6,14 +6,14 @@
 
 ## 📊 Current State (v1.0.0)
 
-| Metric | Value | Target | Status |
-|--------|-------|--------|--------|
-| Shared JS | 102 kB | < 100 kB | 🟡 Close |
-| Dashboard page | 213 kB | < 150 kB | 🔴 Needs work |
-| Settings page | 166 kB | < 100 kB | 🔴 Needs work |
-| LCP (estimate) | ~2.5s | < 2.5s | 🟡 Borderline |
-| FID (estimate) | < 100ms | < 100ms | 🟢 Good |
-| CLS (estimate) | ~0.1 | < 0.1 | 🟢 Good |
+| Metric         | Value   | Target   | Status        |
+| -------------- | ------- | -------- | ------------- |
+| Shared JS      | 102 kB  | < 100 kB | 🟡 Close      |
+| Dashboard page | 213 kB  | < 150 kB | 🔴 Needs work |
+| Settings page  | 166 kB  | < 100 kB | 🔴 Needs work |
+| LCP (estimate) | ~2.5s   | < 2.5s   | 🟡 Borderline |
+| FID (estimate) | < 100ms | < 100ms  | 🟢 Good       |
+| CLS (estimate) | ~0.1    | < 0.1    | 🟢 Good       |
 
 ---
 
@@ -22,6 +22,7 @@
 ### P0 — Critical (Before v1.1.0)
 
 #### 1. Code Splitting for Charts
+
 ```typescript
 // Current: Charts loaded on every page
 import { WeeklyChart, ProjectsChart } from "@/components/charts";
@@ -39,17 +40,19 @@ const WeeklyChart = dynamic(
 **Impact**: -50-80 kB on non-dashboard pages
 
 #### 2. Lazy Load Recharts
+
 ```typescript
 // Create: packages/ui/src/utils/lazy-recharts.ts
 export const LazyBarChart = dynamic(
   () => import("recharts").then((mod) => mod.BarChart),
-  { ssr: false }
+  { ssr: false },
 );
 ```
 
 **Impact**: Dashboard loads faster, charts appear progressively
 
 #### 3. Image Optimization
+
 - Generate PWA icons (currently placeholder paths)
 - Use `next/image` for all images
 - Implement blur placeholders
@@ -61,6 +64,7 @@ npx pwa-asset-generator ./public/logo.svg ./public/icons \
 ```
 
 #### 4. Route Prefetching Strategy
+
 ```typescript
 // next.config.ts
 export default {
@@ -83,6 +87,7 @@ export default {
 ### P1 — Important (v1.1.0 - v1.2.0)
 
 #### 5. Bundle Analysis Setup
+
 ```bash
 # Add to package.json scripts
 "analyze": "ANALYZE=true pnpm build"
@@ -99,6 +104,7 @@ export default withBundleAnalyzer(config);
 ```
 
 #### 6. Tree Shaking Improvements
+
 ```typescript
 // Bad: Import entire library
 import { formatDuration, formatDate, formatTime } from "@timebeat/utils";
@@ -109,6 +115,7 @@ import { formatDate, formatTime } from "@timebeat/utils/date";
 ```
 
 Update `@timebeat/utils` exports:
+
 ```typescript
 // packages/utils/package.json
 {
@@ -122,6 +129,7 @@ Update `@timebeat/utils` exports:
 ```
 
 #### 7. Server Components Optimization
+
 ```typescript
 // Move to Server Components where possible
 // Current (Client)
@@ -137,6 +145,7 @@ export async function ProjectList() {
 ```
 
 #### 8. React Query / SWR for Data Fetching
+
 ```typescript
 // Install
 pnpm add @tanstack/react-query
@@ -168,9 +177,10 @@ function useProjects() {
 ### P2 — Nice to Have (v2.0.0)
 
 #### 9. Edge Runtime for API Routes
+
 ```typescript
 // apps/web/src/app/api/timer/route.ts
-export const runtime = 'edge';
+export const runtime = "edge";
 
 export async function GET() {
   // Runs on edge, lower latency
@@ -178,6 +188,7 @@ export async function GET() {
 ```
 
 #### 10. Streaming SSR
+
 ```typescript
 // apps/web/src/app/(app)/dashboard/page.tsx
 import { Suspense } from 'react';
@@ -198,26 +209,28 @@ export default function DashboardPage() {
 ```
 
 #### 11. Service Worker Caching
+
 ```typescript
 // apps/web/src/sw.ts (Workbox)
-import { precacheAndRoute } from 'workbox-precaching';
-import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
+import { precacheAndRoute } from "workbox-precaching";
+import { registerRoute } from "workbox-routing";
+import { StaleWhileRevalidate, CacheFirst } from "workbox-strategies";
 
 // Cache static assets
 registerRoute(
-  ({ request }) => request.destination === 'image',
-  new CacheFirst({ cacheName: 'images' })
+  ({ request }) => request.destination === "image",
+  new CacheFirst({ cacheName: "images" }),
 );
 
 // Cache API responses
 registerRoute(
-  ({ url }) => url.pathname.startsWith('/api/'),
-  new StaleWhileRevalidate({ cacheName: 'api' })
+  ({ url }) => url.pathname.startsWith("/api/"),
+  new StaleWhileRevalidate({ cacheName: "api" }),
 );
 ```
 
 #### 12. Database Query Optimization
+
 ```typescript
 // Bad: Multiple queries
 const projects = await prisma.project.findMany();
@@ -228,12 +241,12 @@ const projectsWithSessions = await prisma.project.findMany({
   include: {
     sessions: {
       where: {
-        startTime: { gte: startOfWeek() }
+        startTime: { gte: startOfWeek() },
       },
       take: 10,
     },
-    _count: { select: { sessions: true } }
-  }
+    _count: { select: { sessions: true } },
+  },
 });
 ```
 
@@ -242,6 +255,7 @@ const projectsWithSessions = await prisma.project.findMany({
 ## 🔧 Performance Monitoring
 
 ### Setup Vercel Analytics
+
 ```typescript
 // apps/web/src/app/layout.tsx
 import { Analytics } from '@vercel/analytics/react';
@@ -261,10 +275,11 @@ export default function RootLayout({ children }) {
 ```
 
 ### Custom Performance Marks
+
 ```typescript
 // packages/utils/src/performance.ts
 export function measurePageLoad() {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
   const observer = new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
@@ -272,7 +287,9 @@ export function measurePageLoad() {
     }
   });
 
-  observer.observe({ entryTypes: ['navigation', 'paint', 'largest-contentful-paint'] });
+  observer.observe({
+    entryTypes: ["navigation", "paint", "largest-contentful-paint"],
+  });
 }
 ```
 
@@ -280,31 +297,34 @@ export function measurePageLoad() {
 
 ## 📦 Bundle Size Targets
 
-| Package | Current | Target | Strategy |
-|---------|---------|--------|----------|
-| recharts | ~45 kB | 0 (lazy) | Dynamic import |
-| @supabase/supabase-js | ~25 kB | ~25 kB | Keep (essential) |
-| zustand | ~2 kB | ~2 kB | Keep (tiny) |
-| framer-motion | ~30 kB | ~15 kB | Use subset |
-| date-fns | ~10 kB | ~5 kB | Tree shake |
+| Package               | Current | Target   | Strategy         |
+| --------------------- | ------- | -------- | ---------------- |
+| recharts              | ~45 kB  | 0 (lazy) | Dynamic import   |
+| @supabase/supabase-js | ~25 kB  | ~25 kB   | Keep (essential) |
+| zustand               | ~2 kB   | ~2 kB    | Keep (tiny)      |
+| framer-motion         | ~30 kB  | ~15 kB   | Use subset       |
+| date-fns              | ~10 kB  | ~5 kB    | Tree shake       |
 
 ---
 
 ## ✅ Optimization Checklist
 
 ### Before v1.1.0
+
 - [ ] Implement dynamic import for charts
 - [ ] Generate PWA icons
 - [ ] Setup bundle analyzer
 - [ ] Add React Query for caching
 
 ### Before v1.2.0
+
 - [ ] Optimize tree shaking in utils
 - [ ] Convert more components to Server Components
 - [ ] Add Suspense boundaries
 - [ ] Implement proper prefetching
 
 ### Before v2.0.0
+
 - [ ] Setup Service Worker caching
 - [ ] Implement streaming SSR
 - [ ] Add Edge runtime where beneficial
@@ -322,4 +342,4 @@ export function measurePageLoad() {
 
 ---
 
-*Last updated: 2026-03-12*
+_Last updated: 2026-03-12_

@@ -28,7 +28,7 @@ export function WeeklyChart({ sessions }: WeeklyChartProps) {
 
     const totalMinutes = daySessions.reduce(
       (sum, s) => sum + Math.round(s.totalSeconds / 60),
-      0
+      0,
     );
 
     return {

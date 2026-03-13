@@ -6,16 +6,16 @@
 
 ## 📅 Overview
 
-| Version | Codename | Focus | Target | Status |
-|---------|----------|-------|--------|--------|
-| v0.1.0 | Bootstrap | Project setup, architecture | 2026-03-04 | ✅ Done |
-| v0.2.0 | Core | Timer, projects, basic UI | 2026-03-10 | ✅ Done |
-| v0.3.0 | Tasks | Task management, dashboard | 2026-03-11 | ✅ Done |
-| v0.4.0 | Desktop | Tauri integration, tray | 2026-03-12 | ✅ Done |
-| v1.0.0 | MVP | Full P0, ready for daily use | 2026-03-12 | ✅ **Current** |
-| v1.1.0 | Goals | Goals & objectives system | Q2 2026 | 📋 Planned |
-| v1.2.0 | Mobile | iOS & Android apps | Q2 2026 | 📋 Planned |
-| v2.0.0 | Cloud | Full sync, advanced features | Q3 2026 | 💭 Future |
+| Version | Codename  | Focus                        | Target     | Status         |
+| ------- | --------- | ---------------------------- | ---------- | -------------- |
+| v0.1.0  | Bootstrap | Project setup, architecture  | 2026-03-04 | ✅ Done        |
+| v0.2.0  | Core      | Timer, projects, basic UI    | 2026-03-10 | ✅ Done        |
+| v0.3.0  | Tasks     | Task management, dashboard   | 2026-03-11 | ✅ Done        |
+| v0.4.0  | Desktop   | Tauri integration, tray      | 2026-03-12 | ✅ Done        |
+| v1.0.0  | MVP       | Full P0, ready for daily use | 2026-03-12 | ✅ **Current** |
+| v1.1.0  | Goals     | Goals & objectives system    | Q2 2026    | 📋 Planned     |
+| v1.2.0  | Mobile    | iOS & Android apps           | Q2 2026    | 📋 Planned     |
+| v2.0.0  | Cloud     | Full sync, advanced features | Q3 2026    | 💭 Future      |
 
 ---
 
@@ -25,6 +25,7 @@
 **Released**: 2026-03-04
 
 ### Deliverables
+
 - [x] Monorepo structure (Turborepo)
 - [x] Package configuration (pnpm workspace)
 - [x] TypeScript setup
@@ -42,6 +43,7 @@
 **Released**: 2026-03-10
 
 ### Deliverables
+
 - [x] Next.js 15 app setup
 - [x] Tailwind CSS 4 configuration
 - [x] Supabase client integration
@@ -59,6 +61,7 @@
 **Released**: 2026-03-11
 
 ### Deliverables
+
 - [x] Task CRUD within projects
 - [x] Task selection for timer
 - [x] Dashboard component
@@ -75,6 +78,7 @@
 **Released**: 2026-03-12
 
 ### Deliverables
+
 - [x] Tauri v2 project setup
 - [x] System tray icon
 - [x] Timer display in tray
@@ -90,6 +94,7 @@
 **Released**: 2026-03-12
 
 ### Deliverables
+
 - [x] All P0 features from BACKLOG (35/42, 7 deferred)
 - [x] Polish and bug fixes
 - [x] Error boundaries
@@ -99,6 +104,7 @@
 - [x] ~40 UI components
 
 ### Stats
+
 - **Pages**: 11 (4 static, 7 dynamic)
 - **Components**: ~40
 - **Build size**: 102 kB shared JS
@@ -112,6 +118,7 @@
 **Target**: Q2 2026
 
 ### Deliverables
+
 - [ ] Goal creation (daily/weekly/monthly)
 - [ ] Goal progress tracking
 - [ ] Goal notifications
@@ -120,6 +127,7 @@
 - [ ] Deferred P0 features (sounds, timezone, etc.)
 
 ### Acceptance Criteria
+
 - User can set time goals per project
 - Progress is tracked automatically
 - Notifications when goal is achieved
@@ -132,6 +140,7 @@
 **Target**: Q2 2026
 
 ### Deliverables
+
 - [ ] Capacitor 6 integration
 - [ ] Mobile-optimized UI
 - [ ] Background timer (Android foreground service)
@@ -140,6 +149,7 @@
 - [ ] App Store / Play Store submission
 
 ### Acceptance Criteria
+
 - Apps run on iOS and Android
 - Timer works in background
 - Syncs with web/desktop
@@ -152,6 +162,7 @@
 **Target**: Q3 2026
 
 ### Deliverables
+
 - [ ] Offline-first with SQLite
 - [ ] Realtime sync (Supabase Realtime)
 - [ ] Conflict resolution
@@ -160,6 +171,7 @@
 - [ ] Full Pomodoro mode
 
 ### Acceptance Criteria
+
 - Works fully offline
 - Syncs automatically when online
 - Handles conflicts gracefully
@@ -183,14 +195,14 @@ v2.0.0  [░░░░░░░░░░░░░░░░░░░░]   0%
 
 ## 📝 Version History
 
-| Version | Date | Notes |
-|---------|------|-------|
-| v1.0.0 | 2026-03-12 | **MVP Release** — All P0 features |
-| v0.4.0 | 2026-03-12 | Desktop app with Tauri |
-| v0.3.0 | 2026-03-11 | Tasks & Dashboard |
-| v0.2.0 | 2026-03-10 | Core functionality |
-| v0.1.0 | 2026-03-04 | Bootstrap complete |
+| Version | Date       | Notes                             |
+| ------- | ---------- | --------------------------------- |
+| v1.0.0  | 2026-03-12 | **MVP Release** — All P0 features |
+| v0.4.0  | 2026-03-12 | Desktop app with Tauri            |
+| v0.3.0  | 2026-03-11 | Tasks & Dashboard                 |
+| v0.2.0  | 2026-03-10 | Core functionality                |
+| v0.1.0  | 2026-03-04 | Bootstrap complete                |
 
 ---
 
-*Last updated: 2026-03-12*
+_Last updated: 2026-03-12_

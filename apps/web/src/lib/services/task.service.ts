@@ -158,7 +158,7 @@ export const taskService = {
         `
         *,
         projects!inner(user_id)
-      `
+      `,
       )
       .eq("projects.user_id", user.id)
       .single();
@@ -191,7 +191,7 @@ export const taskService = {
         `
         id,
         projects!inner(user_id)
-      `
+      `,
       )
       .eq("id", id)
       .eq("projects.user_id", user.id)
@@ -238,7 +238,7 @@ export const taskService = {
         `
         *,
         projects!inner(user_id)
-      `
+      `,
       )
       .eq("id", id)
       .eq("projects.user_id", user.id)
@@ -272,7 +272,7 @@ export const taskService = {
         `
         *,
         projects!inner(user_id)
-      `
+      `,
       )
       .eq("project_id", projectId)
       .eq("projects.user_id", user.id)
@@ -305,7 +305,7 @@ export const taskService = {
         `
         *,
         projects!inner(user_id)
-      `
+      `,
       )
       .eq("projects.user_id", user.id)
       .eq("status", "IN_PROGRESS")
@@ -339,7 +339,7 @@ export const taskService = {
         `
         *,
         projects!inner(user_id)
-      `
+      `,
       )
       .eq("projects.user_id", user.id)
       .in("status", ["TODO", "IN_PROGRESS"])

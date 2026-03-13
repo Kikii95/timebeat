@@ -3,10 +3,10 @@
  * Shared React hooks for Timebeat
  */
 
-import { useEffect, useRef, useCallback, useState } from 'react';
-import { useTimerStore } from '@timebeat/core';
-import { TimerState } from '@timebeat/types';
-import { TIMER_CONSTANTS } from '@timebeat/constants';
+import { useEffect, useRef, useCallback, useState } from "react";
+import { useTimerStore } from "@timebeat/core";
+import { TimerState } from "@timebeat/types";
+import { TIMER_CONSTANTS } from "@timebeat/constants";
 
 /**
  * Hook to manage timer tick interval
@@ -37,7 +37,7 @@ export function useTimerTick() {
  */
 export function useLocalStorage<T>(key: string, initialValue: T) {
   const readValue = useCallback((): T => {
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
       return initialValue;
     }
 
@@ -52,15 +52,16 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
   const setValue = useCallback(
     (value: T | ((val: T) => T)) => {
       try {
-        const valueToStore = value instanceof Function ? value(readValue()) : value;
-        if (typeof window !== 'undefined') {
+        const valueToStore =
+          value instanceof Function ? value(readValue()) : value;
+        if (typeof window !== "undefined") {
           window.localStorage.setItem(key, JSON.stringify(valueToStore));
         }
       } catch (error) {
         console.warn(`Error setting localStorage key "${key}":`, error);
       }
     },
-    [key, readValue]
+    [key, readValue],
   );
 
   return [readValue(), setValue] as const;
@@ -69,7 +70,10 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 /**
  * Hook for window visibility changes
  */
-export function useVisibilityChange(onVisible?: () => void, onHidden?: () => void) {
+export function useVisibilityChange(
+  onVisible?: () => void,
+  onHidden?: () => void,
+) {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
@@ -79,9 +83,9 @@ export function useVisibilityChange(onVisible?: () => void, onHidden?: () => voi
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [onVisible, onHidden]);
 }
@@ -92,7 +96,7 @@ export function useVisibilityChange(onVisible?: () => void, onHidden?: () => voi
 export function useKeyboardShortcut(
   key: string,
   callback: () => void,
-  modifiers: { ctrl?: boolean; shift?: boolean; alt?: boolean } = {}
+  modifiers: { ctrl?: boolean; shift?: boolean; alt?: boolean } = {},
 ) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -100,15 +104,20 @@ export function useKeyboardShortcut(
       const shiftMatch = modifiers.shift ? event.shiftKey : true;
       const altMatch = modifiers.alt ? event.altKey : true;
 
-      if (event.key.toLowerCase() === key.toLowerCase() && ctrlMatch && shiftMatch && altMatch) {
+      if (
+        event.key.toLowerCase() === key.toLowerCase() &&
+        ctrlMatch &&
+        shiftMatch &&
+        altMatch
+      ) {
         event.preventDefault();
         callback();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [key, callback, modifiers]);
 }

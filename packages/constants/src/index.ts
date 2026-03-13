@@ -36,109 +36,109 @@ export const UI_CONSTANTS = {
 // === COLORS ===
 
 export const PROJECT_COLORS = [
-  '#FF6B6B', // Red
-  '#4ECDC4', // Teal
-  '#45B7D1', // Blue
-  '#96CEB4', // Green
-  '#FFEAA7', // Yellow
-  '#DDA0DD', // Plum
-  '#98D8C8', // Mint
-  '#F7DC6F', // Gold
-  '#BB8FCE', // Purple
-  '#85C1E9', // Light Blue
+  "#FF6B6B", // Red
+  "#4ECDC4", // Teal
+  "#45B7D1", // Blue
+  "#96CEB4", // Green
+  "#FFEAA7", // Yellow
+  "#DDA0DD", // Plum
+  "#98D8C8", // Mint
+  "#F7DC6F", // Gold
+  "#BB8FCE", // Purple
+  "#85C1E9", // Light Blue
 ] as const;
 
-export const DEFAULT_PROJECT_COLOR = '#4ECDC4'; // Teal
+export const DEFAULT_PROJECT_COLOR = "#4ECDC4"; // Teal
 
 // === ICONS ===
 
 export const PROJECT_ICONS = [
-  'code',
-  'book',
-  'briefcase',
-  'gamepad',
-  'music',
-  'video',
-  'palette',
-  'rocket',
-  'heart',
-  'star',
-  'folder',
-  'terminal',
+  "code",
+  "book",
+  "briefcase",
+  "gamepad",
+  "music",
+  "video",
+  "palette",
+  "rocket",
+  "heart",
+  "star",
+  "folder",
+  "terminal",
 ] as const;
 
 // === NOTIFICATIONS ===
 
 export const NOTIFICATION_CONSTANTS = {
-  BREAK_REMINDER_TITLE: 'Time for a break!',
-  SESSION_END_TITLE: 'Session completed',
-  HYDRATION_REMINDER_TITLE: 'Stay hydrated!',
-  STRETCH_REMINDER_TITLE: 'Time to stretch',
+  BREAK_REMINDER_TITLE: "Time for a break!",
+  SESSION_END_TITLE: "Session completed",
+  HYDRATION_REMINDER_TITLE: "Stay hydrated!",
+  STRETCH_REMINDER_TITLE: "Time to stretch",
 } as const;
 
 // === LOCAL STORAGE KEYS ===
 
 export const STORAGE_KEYS = {
-  TIMER_STATE: 'timebeat:timer',
-  USER_SETTINGS: 'timebeat:settings',
-  OFFLINE_QUEUE: 'timebeat:offline-queue',
-  LAST_SYNC: 'timebeat:last-sync',
-  AUTH_TOKEN: 'timebeat:auth',
+  TIMER_STATE: "timebeat:timer",
+  USER_SETTINGS: "timebeat:settings",
+  OFFLINE_QUEUE: "timebeat:offline-queue",
+  LAST_SYNC: "timebeat:last-sync",
+  AUTH_TOKEN: "timebeat:auth",
 } as const;
 
 // === ROUTES ===
 
 export const ROUTES = {
-  HOME: '/',
-  DASHBOARD: '/dashboard',
-  PROJECTS: '/projects',
-  PROJECT_DETAIL: '/projects/:id',
-  TASKS: '/tasks',
-  STATS: '/stats',
-  SETTINGS: '/settings',
+  HOME: "/",
+  DASHBOARD: "/dashboard",
+  PROJECTS: "/projects",
+  PROJECT_DETAIL: "/projects/:id",
+  TASKS: "/tasks",
+  STATS: "/stats",
+  SETTINGS: "/settings",
   AUTH: {
-    LOGIN: '/auth/login',
-    SIGNUP: '/auth/signup',
-    FORGOT_PASSWORD: '/auth/forgot-password',
+    LOGIN: "/auth/login",
+    SIGNUP: "/auth/signup",
+    FORGOT_PASSWORD: "/auth/forgot-password",
   },
 } as const;
 
 // === PLATFORMS ===
 
 export const PLATFORMS = [
-  'Web',
-  'Mobile',
-  'Desktop',
-  'CLI',
-  'API',
-  'Cross-platform',
+  "Web",
+  "Mobile",
+  "Desktop",
+  "CLI",
+  "API",
+  "Cross-platform",
 ] as const;
 
 // === STACKS ===
 
 export const TECH_STACKS = [
-  'React',
-  'Next.js',
-  'Vue',
-  'Angular',
-  'Svelte',
-  'Node.js',
-  'Python',
-  'Rust',
-  'Go',
-  'TypeScript',
-  'Flutter',
-  'React Native',
-  'Tauri',
-  'Electron',
+  "React",
+  "Next.js",
+  "Vue",
+  "Angular",
+  "Svelte",
+  "Node.js",
+  "Python",
+  "Rust",
+  "Go",
+  "TypeScript",
+  "Flutter",
+  "React Native",
+  "Tauri",
+  "Electron",
 ] as const;
 
 // === CATEGORIES ===
 
 export const PROJECT_CATEGORIES = [
-  'Personal',
-  'Work',
-  'Freelance',
-  'Learning',
-  'Open Source',
+  "Personal",
+  "Work",
+  "Freelance",
+  "Learning",
+  "Open Source",
 ] as const;

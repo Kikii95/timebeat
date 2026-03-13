@@ -26,7 +26,9 @@ export async function generateMetadata({
   }
 }
 
-export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
+export default async function ProjectDetailPage({
+  params,
+}: ProjectDetailPageProps) {
   const { id } = await params;
 
   let project;

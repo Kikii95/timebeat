@@ -1,9 +1,18 @@
 "use client";
 
-import { forwardRef, type HTMLAttributes, type ReactNode, useEffect, useRef } from 'react';
-import { cn } from '../utils/cn';
+import {
+  forwardRef,
+  type HTMLAttributes,
+  type ReactNode,
+  useEffect,
+  useRef,
+} from "react";
+import { cn } from "../utils/cn";
 
-export interface DialogProps extends Omit<HTMLAttributes<HTMLDialogElement>, 'title'> {
+export interface DialogProps extends Omit<
+  HTMLAttributes<HTMLDialogElement>,
+  "title"
+> {
   open: boolean;
   onClose: () => void;
   title?: ReactNode;
@@ -12,9 +21,13 @@ export interface DialogProps extends Omit<HTMLAttributes<HTMLDialogElement>, 'ti
 }
 
 export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
-  ({ className, open, onClose, title, description, children, ...props }, ref) => {
+  (
+    { className, open, onClose, title, description, children, ...props },
+    ref,
+  ) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
-    const resolvedRef = (ref as React.RefObject<HTMLDialogElement>) || dialogRef;
+    const resolvedRef =
+      (ref as React.RefObject<HTMLDialogElement>) || dialogRef;
 
     useEffect(() => {
       const dialog = resolvedRef.current;
@@ -32,8 +45,8 @@ export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
       if (!dialog) return;
 
       const handleClose = () => onClose();
-      dialog.addEventListener('close', handleClose);
-      return () => dialog.removeEventListener('close', handleClose);
+      dialog.addEventListener("close", handleClose);
+      return () => dialog.removeEventListener("close", handleClose);
     }, [onClose, resolvedRef]);
 
     const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
@@ -47,13 +60,13 @@ export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
       <dialog
         ref={resolvedRef}
         className={cn(
-          'fixed inset-0 m-auto p-0 rounded-xl shadow-xl',
-          'bg-[var(--color-surface-elevated)] text-[var(--color-text)]',
-          'backdrop:bg-black/50 backdrop:backdrop-blur-sm',
-          'w-full max-w-md',
-          'animate-in fade-in-0 zoom-in-95 duration-200',
-          '[&:not([open])]:hidden',
-          className
+          "fixed inset-0 m-auto p-0 rounded-xl shadow-xl",
+          "bg-[var(--color-surface-elevated)] text-[var(--color-text)]",
+          "backdrop:bg-black/50 backdrop:backdrop-blur-sm",
+          "w-full max-w-md",
+          "animate-in fade-in-0 zoom-in-95 duration-200",
+          "[&:not([open])]:hidden",
+          className,
         )}
         onClick={handleBackdropClick}
         {...props}
@@ -63,7 +76,9 @@ export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
             <div className="mb-4">
               <h2 className="text-lg font-semibold">{title}</h2>
               {description && (
-                <p className="mt-1 text-sm text-[var(--color-text-muted)]">{description}</p>
+                <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+                  {description}
+                </p>
               )}
             </div>
           )}
@@ -71,10 +86,10 @@ export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
         </div>
       </dialog>
     );
-  }
+  },
 );
 
-Dialog.displayName = 'Dialog';
+Dialog.displayName = "Dialog";
 
 // === DIALOG CLOSE BUTTON ===
 
@@ -90,10 +105,10 @@ export const DialogClose = forwardRef<HTMLButtonElement, DialogCloseProps>(
         type="button"
         onClick={onClose}
         className={cn(
-          'absolute right-4 top-4 rounded-full p-1',
-          'text-[var(--color-text-muted)] hover:text-[var(--color-text)]',
-          'hover:bg-[var(--color-neutral-100)] transition-colors',
-          className
+          "absolute right-4 top-4 rounded-full p-1",
+          "text-[var(--color-text-muted)] hover:text-[var(--color-text)]",
+          "hover:bg-[var(--color-neutral-100)] transition-colors",
+          className,
         )}
         {...props}
       >
@@ -114,10 +129,10 @@ export const DialogClose = forwardRef<HTMLButtonElement, DialogCloseProps>(
         <span className="sr-only">Close</span>
       </button>
     );
-  }
+  },
 );
 
-DialogClose.displayName = 'DialogClose';
+DialogClose.displayName = "DialogClose";
 
 // === DIALOG FOOTER ===
 
@@ -128,11 +143,11 @@ export const DialogFooter = forwardRef<HTMLDivElement, DialogFooterProps>(
     return (
       <div
         ref={ref}
-        className={cn('mt-6 flex items-center justify-end gap-3', className)}
+        className={cn("mt-6 flex items-center justify-end gap-3", className)}
         {...props}
       />
     );
-  }
+  },
 );
 
-DialogFooter.displayName = 'DialogFooter';
+DialogFooter.displayName = "DialogFooter";

@@ -89,6 +89,7 @@ CREATE POLICY "Users can CRUD own settings"
 ### Option A: GitHub Integration (Recommended)
 
 1. **Connect Repository**
+
    ```
    vercel.com/new → Import Git Repository
    Select: kiki/timebeat
@@ -101,6 +102,7 @@ CREATE POLICY "Users can CRUD own settings"
    - Output Directory: `.next`
 
 3. **Environment Variables**
+
    ```
    NEXT_PUBLIC_SUPABASE_URL = xxx
    NEXT_PUBLIC_SUPABASE_ANON_KEY = xxx
@@ -147,18 +149,16 @@ export default {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
-          { key: 'X-Frame-Options', value: 'DENY' },
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         ],
       },
       {
-        source: '/api/(.*)',
-        headers: [
-          { key: 'Cache-Control', value: 'no-store' },
-        ],
+        source: "/api/(.*)",
+        headers: [{ key: "Cache-Control", value: "no-store" }],
       },
     ];
   },
@@ -198,11 +198,11 @@ pnpm tauri build
 
 ### Output Locations
 
-| Platform | Output |
-|----------|--------|
-| Windows | `src-tauri/target/release/bundle/msi/Timebeat_1.0.0_x64_en-US.msi` |
-| macOS | `src-tauri/target/release/bundle/dmg/Timebeat_1.0.0_x64.dmg` |
-| Linux | `src-tauri/target/release/bundle/appimage/Timebeat_1.0.0_amd64.AppImage` |
+| Platform | Output                                                                   |
+| -------- | ------------------------------------------------------------------------ |
+| Windows  | `src-tauri/target/release/bundle/msi/Timebeat_1.0.0_x64_en-US.msi`       |
+| macOS    | `src-tauri/target/release/bundle/dmg/Timebeat_1.0.0_x64.dmg`             |
+| Linux    | `src-tauri/target/release/bundle/appimage/Timebeat_1.0.0_amd64.AppImage` |
 
 ### Code Signing
 
@@ -254,6 +254,7 @@ xcrun notarytool submit Timebeat.dmg \
 ```
 
 **Update Server** (simple JSON):
+
 ```json
 // https://releases.timebeat.app/windows/x86_64/1.0.0
 {
@@ -273,7 +274,7 @@ name: Release Desktop
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   build:
@@ -310,8 +311,8 @@ jobs:
         with:
           projectPath: apps/desktop
           tagName: v__VERSION__
-          releaseName: 'Timebeat v__VERSION__'
-          releaseBody: 'See CHANGELOG for details.'
+          releaseName: "Timebeat v__VERSION__"
+          releaseBody: "See CHANGELOG for details."
           releaseDraft: true
 ```
 
@@ -363,7 +364,7 @@ cd apps/mobile/android
 
 ```typescript
 // Already in layout.tsx
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
 ```
 
 ### Sentry (Optional)
@@ -383,13 +384,13 @@ npx @sentry/wizard@latest -i nextjs
 
 ## 🔄 CI/CD Summary
 
-| Event | Action |
-|-------|--------|
-| Push to `main` | Deploy web to production |
-| Push to `dev` | Deploy web to preview |
-| Tag `v*` | Build & release desktop apps |
-| PR | Run tests + type check |
+| Event          | Action                       |
+| -------------- | ---------------------------- |
+| Push to `main` | Deploy web to production     |
+| Push to `dev`  | Deploy web to preview        |
+| Tag `v*`       | Build & release desktop apps |
+| PR             | Run tests + type check       |
 
 ---
 
-*Last updated: 2026-03-12*
+_Last updated: 2026-03-12_

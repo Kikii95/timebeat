@@ -23,7 +23,13 @@ export default function GlobalError({
         >
           <div style={{ maxWidth: "24rem", textAlign: "center" }}>
             <div style={{ marginBottom: "1.5rem", fontSize: "4rem" }}>🔥</div>
-            <h1 style={{ marginBottom: "0.5rem", fontSize: "1.5rem", fontWeight: 600 }}>
+            <h1
+              style={{
+                marginBottom: "0.5rem",
+                fontSize: "1.5rem",
+                fontWeight: 600,
+              }}
+            >
               Critical Error
             </h1>
             <p style={{ marginBottom: "1.5rem", color: "#666" }}>

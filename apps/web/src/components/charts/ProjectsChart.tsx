@@ -21,11 +21,11 @@ export function ProjectsChart({ sessions, projects }: ProjectsChartProps) {
   const projectData = projects
     .map((project) => {
       const projectSessions = sessions.filter(
-        (s) => s.projectId === project.id
+        (s) => s.projectId === project.id,
       );
       const totalSeconds = projectSessions.reduce(
         (sum, s) => sum + s.totalSeconds,
-        0
+        0,
       );
 
       return {
@@ -81,7 +81,8 @@ export function ProjectsChart({ sessions, projects }: ProjectsChartProps) {
             iconType="circle"
             iconSize={8}
             formatter={(value, entry) => {
-              const data = entry.payload as unknown as (typeof projectData)[number];
+              const data =
+                entry.payload as unknown as (typeof projectData)[number];
               return (
                 <span className="text-xs">
                   {value} ({data?.formatted ?? ""})

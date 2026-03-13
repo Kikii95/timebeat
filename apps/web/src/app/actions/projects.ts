@@ -18,7 +18,9 @@ interface ActionResult<T = void> {
 /**
  * Create a new project
  */
-export async function createProject(formData: FormData): Promise<ActionResult<{ id: string }>> {
+export async function createProject(
+  formData: FormData,
+): Promise<ActionResult<{ id: string }>> {
   try {
     const name = formData.get("name") as string;
     const description = formData.get("description") as string | null;
@@ -33,11 +35,24 @@ export async function createProject(formData: FormData): Promise<ActionResult<{ 
     }
 
     if (name.length > 100) {
-      return { success: false, error: "Project name must be less than 100 characters" };
+      return {
+        success: false,
+        error: "Project name must be less than 100 characters",
+      };
     }
 
-    const stack = stackRaw ? stackRaw.split(",").map((s) => s.trim()).filter(Boolean) : [];
-    const platform = platformRaw ? platformRaw.split(",").map((s) => s.trim()).filter(Boolean) : [];
+    const stack = stackRaw
+      ? stackRaw
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [];
+    const platform = platformRaw
+      ? platformRaw
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [];
 
     const project = await projectService.create({
       name: name.trim(),
@@ -56,7 +71,8 @@ export async function createProject(formData: FormData): Promise<ActionResult<{ 
     console.error("Failed to create project:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to create project",
+      error:
+        error instanceof Error ? error.message : "Failed to create project",
     };
   }
 }
@@ -66,7 +82,7 @@ export async function createProject(formData: FormData): Promise<ActionResult<{ 
  */
 export async function updateProject(
   id: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionResult> {
   try {
     const name = formData.get("name") as string | null;
@@ -83,21 +99,31 @@ export async function updateProject(
     }
 
     if (name && name.length > 100) {
-      return { success: false, error: "Project name must be less than 100 characters" };
+      return {
+        success: false,
+        error: "Project name must be less than 100 characters",
+      };
     }
 
     const updateData: Record<string, unknown> = {};
     if (name !== null) updateData.name = name.trim();
-    if (description !== null) updateData.description = description.trim() || null;
+    if (description !== null)
+      updateData.description = description.trim() || null;
     if (type !== null) updateData.type = type;
     if (status !== null) updateData.status = status;
     if (color !== null) updateData.color = color;
     if (icon !== null) updateData.icon = icon.trim() || null;
     if (stackRaw !== null) {
-      updateData.stack = stackRaw.split(",").map((s) => s.trim()).filter(Boolean);
+      updateData.stack = stackRaw
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
     }
     if (platformRaw !== null) {
-      updateData.platform = platformRaw.split(",").map((s) => s.trim()).filter(Boolean);
+      updateData.platform = platformRaw
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
     }
 
     await projectService.update(id, updateData);
@@ -110,7 +136,8 @@ export async function updateProject(
     console.error("Failed to update project:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update project",
+      error:
+        error instanceof Error ? error.message : "Failed to update project",
     };
   }
 }
@@ -129,7 +156,8 @@ export async function deleteProject(id: string): Promise<ActionResult> {
     console.error("Failed to delete project:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to delete project",
+      error:
+        error instanceof Error ? error.message : "Failed to delete project",
     };
   }
 }
@@ -149,7 +177,8 @@ export async function archiveProject(id: string): Promise<ActionResult> {
     console.error("Failed to archive project:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to archive project",
+      error:
+        error instanceof Error ? error.message : "Failed to archive project",
     };
   }
 }
@@ -169,7 +198,8 @@ export async function restoreProject(id: string): Promise<ActionResult> {
     console.error("Failed to restore project:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to restore project",
+      error:
+        error instanceof Error ? error.message : "Failed to restore project",
     };
   }
 }
@@ -177,7 +207,9 @@ export async function restoreProject(id: string): Promise<ActionResult> {
 /**
  * Create project and redirect to detail page
  */
-export async function createProjectAndRedirect(formData: FormData): Promise<void> {
+export async function createProjectAndRedirect(
+  formData: FormData,
+): Promise<void> {
   const result = await createProject(formData);
 
   if (result.success && result.data?.id) {

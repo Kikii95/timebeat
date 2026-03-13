@@ -106,7 +106,8 @@ export const projectService = {
 
     const updateData: Record<string, unknown> = {};
     if (data.name !== undefined) updateData.name = data.name;
-    if (data.description !== undefined) updateData.description = data.description;
+    if (data.description !== undefined)
+      updateData.description = data.description;
     if (data.type !== undefined) updateData.type = data.type;
     if (data.status !== undefined) updateData.status = data.status;
     if (data.color !== undefined) updateData.color = data.color;
@@ -313,7 +314,9 @@ export const projectService = {
 
     const { data: project, error } = await supabase
       .from("projects")
-      .select("total_time_seconds, session_count, task_count, completed_tasks, last_session_at")
+      .select(
+        "total_time_seconds, session_count, task_count, completed_tasks, last_session_at",
+      )
       .eq("id", id)
       .eq("user_id", user.id)
       .single();
@@ -327,7 +330,9 @@ export const projectService = {
       sessionCount: project.session_count,
       taskCount: project.task_count,
       completedTasks: project.completed_tasks,
-      lastSessionAt: project.last_session_at ? new Date(project.last_session_at) : null,
+      lastSessionAt: project.last_session_at
+        ? new Date(project.last_session_at)
+        : null,
     };
   },
 };

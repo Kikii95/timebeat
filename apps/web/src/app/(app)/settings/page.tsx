@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { settingsService } from "@/lib/services/settings.service";
 import { Card, CardContent, CardHeader, CardTitle } from "@timebeat/ui";
-import { TimerSettingsForm, NotificationSettingsForm, ThemeSelector } from "./SettingsForm";
+import {
+  TimerSettingsForm,
+  NotificationSettingsForm,
+  ThemeSelector,
+} from "./SettingsForm";
 import { SignOutButton } from "./SignOutButton";
 import type { UserSettings } from "@timebeat/types";
 
@@ -62,7 +66,9 @@ export default async function SettingsPage() {
               <p className="font-medium">{user?.email || "—"}</p>
             </div>
             <div>
-              <p className="text-sm text-[var(--color-text-muted)]">Member since</p>
+              <p className="text-sm text-[var(--color-text-muted)]">
+                Member since
+              </p>
               <p className="font-medium">
                 {user?.created_at
                   ? new Date(user.created_at).toLocaleDateString()
@@ -106,7 +112,9 @@ export default async function SettingsPage() {
       {/* Danger zone */}
       <Card className="border-[var(--color-danger-200)]">
         <CardHeader className="border-b border-[var(--color-danger-200)]">
-          <CardTitle className="text-[var(--color-danger-600)]">Danger Zone</CardTitle>
+          <CardTitle className="text-[var(--color-danger-600)]">
+            Danger Zone
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">

@@ -1,27 +1,28 @@
-import { forwardRef, type HTMLAttributes } from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '../../utils/cn';
+import { forwardRef, type HTMLAttributes } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "../../utils/cn";
 
-const progressVariants = cva('', {
+const progressVariants = cva("", {
   variants: {
     size: {
-      sm: 'h-1',
-      md: 'h-2',
-      lg: 'h-3',
+      sm: "h-1",
+      md: "h-2",
+      lg: "h-3",
     },
     variant: {
-      linear: 'w-full rounded-full bg-[var(--color-neutral-200)]',
-      circular: '',
+      linear: "w-full rounded-full bg-[var(--color-neutral-200)]",
+      circular: "",
     },
   },
   defaultVariants: {
-    size: 'md',
-    variant: 'linear',
+    size: "md",
+    variant: "linear",
   },
 });
 
 export interface TimerProgressProps
-  extends HTMLAttributes<HTMLDivElement>,
+  extends
+    HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof progressVariants> {
   elapsed: number;
   planned: number;
@@ -33,26 +34,29 @@ export const TimerProgress = forwardRef<HTMLDivElement, TimerProgressProps>(
     {
       className,
       size,
-      variant = 'linear',
+      variant = "linear",
       elapsed,
       planned,
       showLabel = false,
       ...props
     },
-    ref
+    ref,
   ) => {
     const progress = Math.min(100, (elapsed / planned) * 100);
     const remaining = Math.max(0, planned - elapsed);
     const isOvertime = elapsed > planned;
 
-    if (variant === 'circular') {
+    if (variant === "circular") {
       const circumference = 2 * Math.PI * 45;
       const strokeDashoffset = circumference - (progress / 100) * circumference;
 
       return (
         <div
           ref={ref}
-          className={cn('relative inline-flex items-center justify-center', className)}
+          className={cn(
+            "relative inline-flex items-center justify-center",
+            className,
+          )}
           {...props}
         >
           <svg className="h-24 w-24 -rotate-90 transform">
@@ -72,8 +76,8 @@ export const TimerProgress = forwardRef<HTMLDivElement, TimerProgressProps>(
               r="45"
               stroke={
                 isOvertime
-                  ? 'var(--color-danger-500)'
-                  : 'var(--color-primary-500)'
+                  ? "var(--color-danger-500)"
+                  : "var(--color-primary-500)"
               }
               strokeWidth="6"
               fill="none"
@@ -95,14 +99,14 @@ export const TimerProgress = forwardRef<HTMLDivElement, TimerProgressProps>(
     }
 
     return (
-      <div ref={ref} className={cn('space-y-1', className)} {...props}>
+      <div ref={ref} className={cn("space-y-1", className)} {...props}>
         <div className={cn(progressVariants({ size, variant }))}>
           <div
             className={cn(
-              'h-full rounded-full transition-all duration-1000 ease-linear',
+              "h-full rounded-full transition-all duration-1000 ease-linear",
               isOvertime
-                ? 'bg-[var(--color-danger-500)]'
-                : 'bg-[var(--color-primary-500)]'
+                ? "bg-[var(--color-danger-500)]"
+                : "bg-[var(--color-primary-500)]",
             )}
             style={{ width: `${Math.min(progress, 100)}%` }}
           />
@@ -111,15 +115,17 @@ export const TimerProgress = forwardRef<HTMLDivElement, TimerProgressProps>(
           <div className="flex justify-between text-xs text-[var(--color-text-muted)]">
             <span>{Math.round(progress)}%</span>
             <span>
-              {isOvertime ? `+${Math.floor((elapsed - planned) / 60)}m overtime` : `${Math.ceil(remaining / 60)}m left`}
+              {isOvertime
+                ? `+${Math.floor((elapsed - planned) / 60)}m overtime`
+                : `${Math.ceil(remaining / 60)}m left`}
             </span>
           </div>
         )}
       </div>
     );
-  }
+  },
 );
 
-TimerProgress.displayName = 'TimerProgress';
+TimerProgress.displayName = "TimerProgress";
 
 export { progressVariants };
