@@ -1,0 +1,14 @@
+{
+  "$schema": "https://schema.tauri.app/config/2.0.0/capability",
+  "identifier": "default",
+  "description": "Default capabilities for Timebeat desktop app",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-open",
+    "notification:default",
+    "notification:allow-is-permission-granted",
+    "notification:allow-request-permission",
+    "notification:allow-notify"
+  ]
+}
