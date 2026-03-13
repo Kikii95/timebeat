@@ -18,6 +18,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.1] - 2026-03-13
+
+### Fixed
+
+- Vercel deployment configuration for monorepo
+- Simplified `vercel.json` with `outputDirectory: ".next"` only
+- Desktop build: cross-env for Windows compatibility
+- Desktop build: universal macOS binary (Intel + Apple Silicon)
+- CI workflow: correct rust-toolchain action name
+- ESLint configuration for monorepo root
+
+---
+
 ## [1.0.0] - 2026-03-12
 
 ### 🎉 MVP Release
@@ -179,7 +192,8 @@ First complete release with all P0 features implemented.
 
 | Version | Date       | Codename  | Status     |
 | ------- | ---------- | --------- | ---------- |
-| 1.0.0   | 2026-03-12 | MVP       | ✅ Current |
+| 1.0.1   | 2026-03-13 | Hotfix    | ✅ Current |
+| 1.0.0   | 2026-03-12 | MVP       | ✅ Done    |
 | 0.4.0   | 2026-03-12 | Desktop   | ✅ Done    |
 | 0.3.0   | 2026-03-11 | Tasks     | ✅ Done    |
 | 0.2.0   | 2026-03-10 | Core      | ✅ Done    |
@@ -187,7 +201,8 @@ First complete release with all P0 features implemented.
 
 ---
 
-[Unreleased]: https://github.com/kiki/timebeat/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/kiki/timebeat/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/kiki/timebeat/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/kiki/timebeat/compare/v0.4.0...v1.0.0
 [0.4.0]: https://github.com/kiki/timebeat/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/kiki/timebeat/compare/v0.2.0...v0.3.0

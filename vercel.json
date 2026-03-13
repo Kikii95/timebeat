@@ -1,9 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs",
-  "buildCommand": "cd .. && pnpm turbo build --filter=@timebeat/web --force",
-  "outputDirectory": "web/.next",
-  "devCommand": "pnpm dev:web",
-  "installCommand": "corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install",
-  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ':!apps/desktop' ':!apps/mobile' ':!*.md'"
-}

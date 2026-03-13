@@ -215,17 +215,21 @@ refactor(core): extract timer state machine
 
 - Desktop build requires static export (currently skipped in CI)
 - PWA icons need to be generated (placeholder paths in manifest)
+- Missing pages: `/terms`, `/privacy` (404)
+- Zustand deprecated warning: use `import { create } from 'zustand'`
+- CI/CD pipeline needed for automated deployments
 
 ---
 
 ## 📅 Session History
 
-| Date       | Focus     | Outcome                         |
-| ---------- | --------- | ------------------------------- |
-| 2026-03-04 | Bootstrap | Structure complete              |
-| 2026-03-10 | Core      | Auth, Projects, Timer           |
-| 2026-03-11 | Tasks     | Dashboard, Charts, Settings     |
-| 2026-03-12 | MVP       | Desktop, Polish, Release v1.0.0 |
+| Date       | Focus      | Outcome                          |
+| ---------- | ---------- | -------------------------------- |
+| 2026-03-04 | Bootstrap  | Structure complete               |
+| 2026-03-10 | Core       | Auth, Projects, Timer            |
+| 2026-03-11 | Tasks      | Dashboard, Charts, Settings      |
+| 2026-03-12 | MVP        | Desktop, Polish, Release v1.0.0  |
+| 2026-03-13 | Deployment | Vercel config fix, env vars setup|
 
 ---
 
