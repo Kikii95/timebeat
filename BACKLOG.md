@@ -4,62 +4,62 @@
 
 ---
 
-## 🔴 P0 — MVP (Must Have)
+## 🔴 P0 — MVP (Must Have) ✅ COMPLETE
 
 ### Projects Management
-- [ ] **TB-001** Create project (name, type, stack, platform, color, icon)
-- [ ] **TB-002** Edit project details
-- [ ] **TB-003** Archive/delete project
-- [ ] **TB-004** List projects with filtering (status, type)
-- [ ] **TB-005** Project detail view with stats
-- [ ] **TB-006** Attach README/notes to project
+- [x] **TB-001** Create project (name, type, stack, platform, color, icon)
+- [x] **TB-002** Edit project details
+- [x] **TB-003** Archive/delete project
+- [x] **TB-004** List projects with filtering (status, type)
+- [x] **TB-005** Project detail view with stats
+- [ ] **TB-006** Attach README/notes to project *(deferred to P1)*
 
 ### Time Tracking Core
-- [ ] **TB-010** Select project and start timer
-- [ ] **TB-011** Free mode timer (no limit)
-- [ ] **TB-012** Timed mode (set duration before starting)
-- [ ] **TB-013** Pause/Resume timer
-- [ ] **TB-014** Stop timer and save session
-- [ ] **TB-015** Timer persists on page refresh/app restart
-- [ ] **TB-016** Desktop tray icon with timer display
-- [ ] **TB-017** Quick start from tray (recent projects)
+- [x] **TB-010** Select project and start timer
+- [x] **TB-011** Free mode timer (no limit)
+- [x] **TB-012** Timed mode (set duration before starting)
+- [x] **TB-013** Pause/Resume timer
+- [x] **TB-014** Stop timer and save session
+- [x] **TB-015** Timer persists on page refresh/app restart
+- [x] **TB-016** Desktop tray icon with timer display
+- [x] **TB-017** Quick start from tray (recent projects)
 
 ### Tasks Management
-- [ ] **TB-020** Create task within project
-- [ ] **TB-021** Set task as current when starting timer
-- [ ] **TB-022** Mark task as completed
-- [ ] **TB-023** Task list view per project
-- [ ] **TB-024** Task time tracking (estimated vs actual)
-- [ ] **TB-025** Reorder tasks (drag & drop)
+- [x] **TB-020** Create task within project
+- [x] **TB-021** Set task as current when starting timer
+- [x] **TB-022** Mark task as completed
+- [x] **TB-023** Task list view per project
+- [ ] **TB-024** Task time tracking (estimated vs actual) *(deferred to P1)*
+- [ ] **TB-025** Reorder tasks (drag & drop) *(deferred to P1)*
 
 ### Notifications
-- [ ] **TB-030** Break reminder notification (configurable interval)
-- [ ] **TB-031** Session end notification (timed mode)
-- [ ] **TB-032** Warning for long sessions (>5h on same task)
-- [ ] **TB-033** Desktop native notifications
-- [ ] **TB-034** Sound alerts (toggleable)
+- [x] **TB-030** Break reminder notification (configurable interval)
+- [x] **TB-031** Session end notification (timed mode)
+- [ ] **TB-032** Warning for long sessions (>5h on same task) *(deferred to P1)*
+- [x] **TB-033** Desktop native notifications
+- [ ] **TB-034** Sound alerts (toggleable) *(deferred to P1)*
 
 ### Dashboard Basic
-- [ ] **TB-040** Today's total time
-- [ ] **TB-041** Time breakdown by project (pie chart)
-- [ ] **TB-042** Recent sessions list
-- [ ] **TB-043** Active project indicator
-- [ ] **TB-044** Quick timer access from dashboard
+- [x] **TB-040** Today's total time
+- [x] **TB-041** Time breakdown by project (pie chart)
+- [x] **TB-042** Recent sessions list
+- [x] **TB-043** Active project indicator
+- [x] **TB-044** Quick timer access from dashboard
 
 ### Authentication
-- [ ] **TB-050** Email/password signup
-- [ ] **TB-051** Email/password login
-- [ ] **TB-052** Magic link login
-- [ ] **TB-053** Logout
-- [ ] **TB-054** Password reset flow
-- [ ] **TB-055** Session persistence
+- [x] **TB-050** Email/password signup
+- [x] **TB-051** Email/password login
+- [x] **TB-052** Magic link login
+- [x] **TB-053** Logout
+- [x] **TB-054** Password reset flow
+- [x] **TB-055** Session persistence
 
 ### Settings
-- [ ] **TB-060** Pomodoro settings (work/break durations)
-- [ ] **TB-061** Notification preferences
-- [ ] **TB-062** Theme selection (light/dark/system)
-- [ ] **TB-063** Timezone setting
-- [ ] **TB-064** Sound on/off toggle
+- [x] **TB-060** Pomodoro settings (work/break durations)
+- [x] **TB-061** Notification preferences
+- [x] **TB-062** Theme selection (light/dark/system)
+- [ ] **TB-063** Timezone setting *(deferred to P1)*
+- [ ] **TB-064** Sound on/off toggle *(deferred to P1)*
 
 ---
 
@@ -74,7 +74,7 @@
 - [ ] **TB-105** Remaining time calculation
 
 ### Dashboard Advanced
-- [ ] **TB-110** Week view with daily breakdown
+- [x] **TB-110** Week view with daily breakdown
 - [ ] **TB-111** Month view calendar heatmap
 - [ ] **TB-112** Time by category/stack chart
 - [ ] **TB-113** Trend analysis (this week vs last)
@@ -96,6 +96,15 @@
 - [ ] **TB-133** Conflict resolution
 - [ ] **TB-134** Sync status indicator
 - [ ] **TB-135** Manual sync trigger
+
+### Deferred from P0
+- [ ] **TB-006** Attach README/notes to project
+- [ ] **TB-024** Task time tracking (estimated vs actual)
+- [ ] **TB-025** Reorder tasks (drag & drop)
+- [ ] **TB-032** Warning for long sessions (>5h)
+- [ ] **TB-034** Sound alerts (toggleable)
+- [ ] **TB-063** Timezone setting
+- [ ] **TB-064** Sound on/off toggle
 
 ---
 
@@ -162,25 +171,37 @@
 
 ---
 
+## 📊 Status Summary
+
+| Priority | Total | Done | Remaining |
+|----------|-------|------|-----------|
+| P0 (MVP) | 42 | 35 | 7 deferred |
+| P1 | 28 | 1 | 27 |
+| P2 | 19 | 0 | 19 |
+| P3 | 18 | 0 | 18 |
+
+**MVP Status**: ✅ **COMPLETE** (v1.0.0 released 2026-03-12)
+
+---
+
 ## 📊 Status Legend
 
 | Status | Meaning |
 |--------|---------|
-| ⬜ | Not started |
+| [ ] | Not started |
+| [x] | Completed |
 | 🚧 | In progress |
-| ✅ | Completed |
-| ❌ | Cancelled |
-| 🔄 | Blocked |
+| *(deferred)* | Moved to later phase |
 
 ---
 
 ## 📝 Notes
 
-- P0 features are required for initial release
-- P1 features targeted for v1.0
+- P0 features completed for MVP v1.0.0
+- Some P0 features deferred to P1 (non-critical)
+- P1 features targeted for v1.1.0 - v1.2.0
 - P2/P3 features based on user feedback
-- Feature IDs (TB-XXX) for tracking
 
 ---
 
-*Last updated: 2026-03-04*
+*Last updated: 2026-03-12*

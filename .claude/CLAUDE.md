@@ -9,7 +9,7 @@
 | **Name** | timebeat |
 | **Category** | perso |
 | **Type** | Monorepo (apps + packages) |
-| **Status** | Bootstrap → Development |
+| **Status** | ✅ MVP v1.0.0 Released |
 | **Path** | `~/projects/perso/timebeat` |
 
 ---
@@ -91,15 +91,28 @@ timebeat/
 
 ## 🎯 Current Phase
 
-**Phase**: Bootstrap (v0.0.1)
-**Next**: Core (v0.2.0) — Timer, projects, auth
+**Phase**: ✅ MVP Complete (v1.0.0)
+**Released**: 2026-03-12
+**Next**: Goals (v1.1.0) — Goals & objectives system
 
-### Immediate Tasks
+### Completed in MVP
 
-1. Setup Next.js app in `apps/web/`
-2. Configure Supabase client
-3. Implement authentication
-4. Build timer component
+1. ✅ Next.js 15 app with 11 pages
+2. ✅ Supabase Auth + PostgreSQL
+3. ✅ Full authentication (email, magic link)
+4. ✅ Timer with free/timed modes
+5. ✅ Project CRUD
+6. ✅ Task management
+7. ✅ Dashboard with charts
+8. ✅ Settings page
+9. ✅ Desktop app (Tauri v2)
+10. ✅ ~40 UI components
+
+### Next Phase Tasks (v1.1.0)
+
+1. Goals & objectives system
+2. Deferred P0 features (sounds, timezone)
+3. Mobile app planning (Capacitor)
 
 ---
 
@@ -200,7 +213,8 @@ refactor(core): extract timer state machine
 
 ## 🐛 Known Issues
 
-*None yet — bootstrap phase*
+- Desktop build requires static export (currently skipped in CI)
+- PWA icons need to be generated (placeholder paths in manifest)
 
 ---
 
@@ -209,7 +223,10 @@ refactor(core): extract timer state machine
 | Date | Focus | Outcome |
 |------|-------|---------|
 | 2026-03-04 | Bootstrap | Structure complete |
+| 2026-03-10 | Core | Auth, Projects, Timer |
+| 2026-03-11 | Tasks | Dashboard, Charts, Settings |
+| 2026-03-12 | MVP | Desktop, Polish, Release v1.0.0 |
 
 ---
 
-*Last updated: 2026-03-04*
+*Last updated: 2026-03-12*
