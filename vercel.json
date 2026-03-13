@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm turbo build --filter=@timebeat/web --force && mv apps/web/.next .next && mv apps/web/public public",
+  "buildCommand": "pnpm turbo build --filter=@timebeat/web --force && echo '=== Checking .next locations ===' && ls -la apps/web/ && ls -la . && find . -name '.next' -type d 2>/dev/null | head -5",
   "devCommand": "pnpm dev:web",
   "installCommand": "corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install",
   "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ':!apps/desktop' ':!apps/mobile' ':!*.md'"
