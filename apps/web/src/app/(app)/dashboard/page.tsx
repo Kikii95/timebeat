@@ -17,7 +17,6 @@ async function getServerData() {
   // Dynamic import to avoid bundling server code in static export
   const { sessionService } = await import("@/lib/services/session.service");
   const { projectService } = await import("@/lib/services/project.service");
-  const { Session, Project } = await import("@timebeat/types");
 
   const now = new Date();
 
