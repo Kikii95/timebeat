@@ -1,16 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Skeleton } from "@timebeat/ui";
 
 /**
- * Client-side auth callback handler for static export (desktop app)
- * In static export mode, API routes don't work, so we handle
- * the OAuth code exchange entirely client-side.
+ * Inner component that uses useSearchParams
+ * Must be wrapped in Suspense for static export
  */
-export default function CallbackPage() {
+function CallbackHandler() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
@@ -28,8 +27,6 @@ export default function CallbackPage() {
 
       try {
         const supabase = createClient();
-
-        // Exchange the code for a session
         const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
 
         if (exchangeError) {
@@ -39,7 +36,6 @@ export default function CallbackPage() {
           return;
         }
 
-        // Success - redirect to dashboard or specified page
         router.push(redirectTo);
       } catch (err) {
         console.error("Callback error:", err);
@@ -51,34 +47,66 @@ export default function CallbackPage() {
     handleCallback();
   }, [router, searchParams]);
 
+  if (error) {
+    return (
+      <div className="space-y-4">
+        <div className="text-6xl">⚠️</div>
+        <h1 className="text-xl font-semibold text-[var(--color-danger-600)]">
+          Authentication Error
+        </h1>
+        <p className="text-[var(--color-text-muted)]">{error}</p>
+        <p className="text-sm text-[var(--color-text-subtle)]">
+          Redirecting to login...
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <Skeleton className="mx-auto h-16 w-16 rounded-full" />
+      <h1 className="text-xl font-semibold">Completing sign in...</h1>
+      <p className="text-[var(--color-text-muted)]">
+        Please wait while we set up your session.
+      </p>
+      <div className="flex justify-center gap-2">
+        <Skeleton className="h-2 w-2 rounded-full" />
+        <Skeleton className="h-2 w-2 rounded-full" />
+        <Skeleton className="h-2 w-2 rounded-full" />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Loading fallback for Suspense
+ */
+function CallbackLoading() {
+  return (
+    <div className="space-y-4">
+      <Skeleton className="mx-auto h-16 w-16 rounded-full" />
+      <h1 className="text-xl font-semibold">Loading...</h1>
+      <div className="flex justify-center gap-2">
+        <Skeleton className="h-2 w-2 rounded-full" />
+        <Skeleton className="h-2 w-2 rounded-full" />
+        <Skeleton className="h-2 w-2 rounded-full" />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Client-side auth callback handler for static export (desktop app)
+ * In static export mode, API routes don't work, so we handle
+ * the OAuth code exchange entirely client-side.
+ */
+export default function CallbackPage() {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="mx-auto max-w-md space-y-6 text-center">
-        {error ? (
-          <div className="space-y-4">
-            <div className="text-6xl">⚠️</div>
-            <h1 className="text-xl font-semibold text-[var(--color-danger-600)]">
-              Authentication Error
-            </h1>
-            <p className="text-[var(--color-text-muted)]">{error}</p>
-            <p className="text-sm text-[var(--color-text-subtle)]">
-              Redirecting to login...
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <Skeleton className="mx-auto h-16 w-16 rounded-full" />
-            <h1 className="text-xl font-semibold">Completing sign in...</h1>
-            <p className="text-[var(--color-text-muted)]">
-              Please wait while we set up your session.
-            </p>
-            <div className="flex justify-center gap-2">
-              <Skeleton className="h-2 w-2 rounded-full" />
-              <Skeleton className="h-2 w-2 rounded-full" />
-              <Skeleton className="h-2 w-2 rounded-full" />
-            </div>
-          </div>
-        )}
+        <Suspense fallback={<CallbackLoading />}>
+          <CallbackHandler />
+        </Suspense>
       </div>
     </div>
   );

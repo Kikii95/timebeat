@@ -7,28 +7,29 @@ interface ProjectDetailPageProps {
 
 const isStaticExport = process.env.STATIC_EXPORT === "true";
 
-// Required for static export - pages will be generated on-demand client-side
+// For static export: generate a placeholder path
+// Real project pages are rendered client-side
 export async function generateStaticParams() {
-  // Return empty array for static export
-  // Pages will be rendered client-side in desktop app
+  if (isStaticExport) {
+    // Generate a placeholder - actual routing is client-side
+    return [{ id: "_" }];
+  }
+  // In SSR mode, pages are generated on-demand
   return [];
 }
-
-// Allow dynamic params for client-side routing
-export const dynamicParams = true;
 
 export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
-  // In static export mode, use generic metadata
-  if (isStaticExport) {
+  const { id } = await params;
+
+  // Placeholder or static export mode
+  if (isStaticExport || id === "_") {
     return {
       title: "Project Details",
       description: "View project details",
     };
   }
-
-  const { id } = await params;
 
   try {
     const { projectService } = await import("@/lib/services/project.service");
@@ -46,7 +47,7 @@ export async function generateMetadata({
 }
 
 async function getServerData(id: string) {
-  if (isStaticExport) {
+  if (isStaticExport || id === "_") {
     return { project: null, stats: null };
   }
 
