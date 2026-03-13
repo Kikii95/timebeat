@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import type { Project } from "@timebeat/types";
+import { ProjectStatus, type Project } from "@timebeat/types";
 import { formatDuration } from "@timebeat/utils";
 import {
   Badge,
@@ -135,7 +135,7 @@ export function ProjectDetailContent({
       try {
         await updateMutation.mutateAsync({
           id: project.id,
-          data: { status: "ACTIVE" },
+          data: { status: ProjectStatus.ACTIVE },
         });
       } catch (err) {
         console.error("Failed to restore project:", err);

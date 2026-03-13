@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import type { Project } from "@timebeat/types";
+import { ProjectType, type Project } from "@timebeat/types";
 import {
   Button,
   Dialog,
@@ -44,7 +44,7 @@ export function ProjectsContent({
     const projectInput: CreateProjectInput = {
       name: formData.get("name") as string,
       description: (formData.get("description") as string) || undefined,
-      type: (formData.get("type") as CreateProjectInput["type"]) || "PERSONAL",
+      type: (formData.get("type") as CreateProjectInput["type"]) || ProjectType.PERSONAL,
       color: (formData.get("color") as string) || "#3B82F6",
       icon: (formData.get("icon") as string) || undefined,
       stack: [],
