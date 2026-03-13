@@ -48,6 +48,8 @@ export const PROJECT_COLORS = [
   '#85C1E9', // Light Blue
 ] as const;
 
+export const DEFAULT_PROJECT_COLOR = '#4ECDC4'; // Teal
+
 // === ICONS ===
 
 export const PROJECT_ICONS = [

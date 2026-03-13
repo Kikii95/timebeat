@@ -84,6 +84,8 @@ export interface Project {
   stack: string[];
   platform: string[];
   totalTimeSeconds: number;
+  sessionCount: number;
+  lastSessionAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -153,20 +155,25 @@ export interface SyncOutbox {
 
 // === TIMER STATE ===
 
+export type TimerMode = 'FREE' | 'TIMED';
+
 export interface TimerStore {
+  // State
   state: TimerState;
+  mode: TimerMode;
+  elapsed: number;
+  planned: number | null;
+  pausedTime: number;
   currentSession: Session | null;
   currentProject: Project | null;
   currentTask: Task | null;
-  elapsedSeconds: number;
-  pausedSeconds: number;
   breaks: Break[];
 
   // Actions
-  start: (project: Project, task?: Task, plannedMinutes?: number) => void;
+  start: (project?: Project, task?: Task, plannedMinutes?: number) => void;
   pause: () => void;
   resume: () => void;
-  stop: () => Session;
+  stop: () => Session | null;
   startBreak: () => void;
   endBreak: () => void;
   tick: () => void;

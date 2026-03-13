@@ -13,7 +13,11 @@
     "lint": "eslint src/"
   },
   "dependencies": {
+    "@timebeat/constants": "workspace:*",
     "@timebeat/types": "workspace:*",
+    "@timebeat/utils": "workspace:*",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^2.14.0"

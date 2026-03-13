@@ -3,12 +3,14 @@
  * Shared React hooks for Timebeat
  */
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { useTimerStore } from '@timebeat/core';
+import { TimerState } from '@timebeat/types';
 import { TIMER_CONSTANTS } from '@timebeat/constants';
 
 /**
  * Hook to manage timer tick interval
+ * Only ticks when timer is in RUNNING or BREAK state
  */
 export function useTimerTick() {
   const tick = useTimerStore((state) => state.tick);
@@ -16,7 +18,8 @@ export function useTimerTick() {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (timerState === 'RUNNING' || timerState === 'PAUSED' || timerState === 'BREAK') {
+    // Only tick when running or on break (not when IDLE or PAUSED)
+    if (timerState === TimerState.RUNNING || timerState === TimerState.BREAK) {
       intervalRef.current = setInterval(tick, TIMER_CONSTANTS.TICK_INTERVAL_MS);
     }
 
@@ -123,6 +126,3 @@ export function useDebounce<T>(value: T, delay: number): T {
 
   return debouncedValue;
 }
-
-// Need to import useState for useDebounce
-import { useState } from 'react';

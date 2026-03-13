@@ -6,22 +6,28 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type {
   TimerStore,
-  TimerState,
+  TimerMode,
   Project,
   Task,
   Session,
   Break
 } from '@timebeat/types';
+import { TimerState, SessionType } from '@timebeat/types';
 import { STORAGE_KEYS, TIMER_CONSTANTS } from '@timebeat/constants';
 import { generateId } from '@timebeat/utils';
 
-const initialState = {
-  state: 'IDLE' as TimerState,
+const initialState: Pick<
+  TimerStore,
+  'state' | 'mode' | 'elapsed' | 'planned' | 'pausedTime' | 'currentSession' | 'currentProject' | 'currentTask' | 'breaks'
+> = {
+  state: TimerState.IDLE,
+  mode: 'FREE' as TimerMode,
+  elapsed: 0,
+  planned: null,
+  pausedTime: 0,
   currentSession: null,
   currentProject: null,
   currentTask: null,
-  elapsedSeconds: 0,
-  pausedSeconds: 0,
   breaks: [],
 };
 
@@ -30,13 +36,15 @@ export const useTimerStore = create<TimerStore>()(
     (set, get) => ({
       ...initialState,
 
-      start: (project: Project, task?: Task, plannedMinutes?: number) => {
+      start: (project?: Project, task?: Task, plannedMinutes?: number) => {
+        const mode: TimerMode = plannedMinutes ? 'TIMED' : 'FREE';
+
         const session: Session = {
           id: generateId(),
-          userId: '', // Set by auth context
-          projectId: project.id,
+          userId: '', // Set by auth context when saving
+          projectId: project?.id ?? '',
           taskId: task?.id ?? null,
-          type: plannedMinutes ? 'TIMED' : 'FREE',
+          type: plannedMinutes ? SessionType.TIMED : SessionType.FREE,
           plannedMinutes: plannedMinutes ?? null,
           startedAt: new Date(),
           endedAt: null,
@@ -48,36 +56,39 @@ export const useTimerStore = create<TimerStore>()(
         };
 
         set({
-          state: 'RUNNING',
+          state: TimerState.RUNNING,
+          mode,
+          elapsed: 0,
+          planned: plannedMinutes ? plannedMinutes * 60 : null,
+          pausedTime: 0,
           currentSession: session,
-          currentProject: project,
+          currentProject: project ?? null,
           currentTask: task ?? null,
-          elapsedSeconds: 0,
-          pausedSeconds: 0,
           breaks: [],
         });
       },
 
       pause: () => {
-        set({ state: 'PAUSED' });
+        set({ state: TimerState.PAUSED });
       },
 
       resume: () => {
-        set({ state: 'RUNNING' });
+        set({ state: TimerState.RUNNING });
       },
 
       stop: () => {
-        const { currentSession, elapsedSeconds, pausedSeconds } = get();
+        const { currentSession, elapsed, pausedTime } = get();
 
         if (!currentSession) {
-          throw new Error('No active session to stop');
+          set(initialState);
+          return null;
         }
 
         const completedSession: Session = {
           ...currentSession,
           endedAt: new Date(),
-          totalSeconds: elapsedSeconds,
-          pausedSeconds,
+          totalSeconds: elapsed,
+          pausedSeconds: pausedTime,
           updatedAt: new Date(),
         };
 
@@ -96,7 +107,7 @@ export const useTimerStore = create<TimerStore>()(
         };
 
         set((state) => ({
-          state: 'BREAK',
+          state: TimerState.BREAK,
           breaks: [...state.breaks, newBreak],
         }));
       },
@@ -114,7 +125,7 @@ export const useTimerStore = create<TimerStore>()(
           }
 
           return {
-            state: 'RUNNING',
+            state: TimerState.RUNNING,
             breaks,
           };
         });
@@ -123,10 +134,10 @@ export const useTimerStore = create<TimerStore>()(
       tick: () => {
         const { state } = get();
 
-        if (state === 'RUNNING') {
-          set((s) => ({ elapsedSeconds: s.elapsedSeconds + 1 }));
-        } else if (state === 'PAUSED' || state === 'BREAK') {
-          set((s) => ({ pausedSeconds: s.pausedSeconds + 1 }));
+        if (state === TimerState.RUNNING) {
+          set((s) => ({ elapsed: s.elapsed + 1 }));
+        } else if (state === TimerState.PAUSED || state === TimerState.BREAK) {
+          set((s) => ({ pausedTime: s.pausedTime + 1 }));
         }
       },
 
@@ -138,11 +149,13 @@ export const useTimerStore = create<TimerStore>()(
       name: STORAGE_KEYS.TIMER_STATE,
       partialize: (state) => ({
         state: state.state,
+        mode: state.mode,
+        elapsed: state.elapsed,
+        planned: state.planned,
+        pausedTime: state.pausedTime,
         currentSession: state.currentSession,
         currentProject: state.currentProject,
         currentTask: state.currentTask,
-        elapsedSeconds: state.elapsedSeconds,
-        pausedSeconds: state.pausedSeconds,
         breaks: state.breaks,
       }),
     }
@@ -157,18 +170,16 @@ export const selectIsIdle = (state: TimerStore) => state.state === 'IDLE';
 export const selectIsOnBreak = (state: TimerStore) => state.state === 'BREAK';
 
 export const selectRemainingSeconds = (state: TimerStore) => {
-  if (!state.currentSession?.plannedMinutes) return null;
-  const plannedSeconds = state.currentSession.plannedMinutes * 60;
-  return Math.max(0, plannedSeconds - state.elapsedSeconds);
+  if (!state.planned) return null;
+  return Math.max(0, state.planned - state.elapsed);
 };
 
 export const selectProgress = (state: TimerStore) => {
-  if (!state.currentSession?.plannedMinutes) return null;
-  const plannedSeconds = state.currentSession.plannedMinutes * 60;
-  return Math.min(100, (state.elapsedSeconds / plannedSeconds) * 100);
+  if (!state.planned) return null;
+  return Math.min(100, (state.elapsed / state.planned) * 100);
 };
 
 export const selectShouldWarnLongSession = (state: TimerStore) => {
   const warningSeconds = TIMER_CONSTANTS.WARNING_LONG_SESSION_HOURS * 3600;
-  return state.elapsedSeconds >= warningSeconds;
+  return state.elapsed >= warningSeconds;
 };
