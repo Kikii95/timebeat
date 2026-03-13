@@ -26,15 +26,15 @@ jobs:
           - name: Windows
             os: windows-latest
             target: x86_64-pc-windows-msvc
-            ext: .exe
+            rust_targets: x86_64-pc-windows-msvc
           - name: macOS (Universal)
             os: macos-latest
             target: universal-apple-darwin
-            ext: .dmg
+            rust_targets: aarch64-apple-darwin,x86_64-apple-darwin
           - name: Linux
             os: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
-            ext: .AppImage
+            rust_targets: x86_64-unknown-linux-gnu
 
     steps:
       - name: Checkout
@@ -54,7 +54,7 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.config.target }}
+          targets: ${{ matrix.config.rust_targets }}
 
       - name: Rust cache
         uses: Swatinem/rust-cache@v2
@@ -76,12 +76,21 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build web (static export)
+        run: pnpm build:web --force
+        env:
+          STATIC_EXPORT: 'true'
+          SKIP_ENV_VALIDATION: 'true'
+
+      - name: Verify web output
+        run: |
+          ls -la apps/web/out/ || echo "ERROR: out/ directory not found!"
+        shell: bash
+
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          STATIC_EXPORT: true
-          SKIP_ENV_VALIDATION: true
         with:
           projectPath: apps/desktop
           tauriScript: pnpm tauri
@@ -92,8 +101,11 @@ jobs:
         with:
           name: timebeat-${{ matrix.config.target }}
           path: |
-            apps/desktop/src-tauri/target/${{ matrix.config.target }}/release/bundle/**/*${{ matrix.config.ext }}
+            apps/desktop/src-tauri/target/${{ matrix.config.target }}/release/bundle/**/*.exe
             apps/desktop/src-tauri/target/${{ matrix.config.target }}/release/bundle/**/*.msi
+            apps/desktop/src-tauri/target/${{ matrix.config.target }}/release/bundle/**/*.dmg
+            apps/desktop/src-tauri/target/${{ matrix.config.target }}/release/bundle/**/*.app
+            apps/desktop/src-tauri/target/${{ matrix.config.target }}/release/bundle/**/*.AppImage
             apps/desktop/src-tauri/target/${{ matrix.config.target }}/release/bundle/**/*.deb
           retention-days: 7
 
