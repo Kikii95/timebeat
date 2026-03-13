@@ -1,10 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm turbo build --filter=@timebeat/web",
-  "outputDirectory": "apps/web/.next",
+  "buildCommand": "pnpm turbo build --filter=@timebeat/web --force && mv apps/web/.next .next && mv apps/web/public public",
+  "devCommand": "pnpm dev:web",
   "installCommand": "corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install",
-  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ':!apps/desktop' ':!apps/mobile' ':!*.md'",
-  "env": {
-    "TURBO_REMOTE_ONLY": "true"
-  }
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ':!apps/desktop' ':!apps/mobile' ':!*.md'"
 }
